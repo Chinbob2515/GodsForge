@@ -27,6 +27,8 @@ public class Settings {
 			screen.end();
 		}
 		random = null;
+		generic[0] = Graphics.RWIDTH;
+		generic[1] = Graphics.RHEIGHT;
 		IOHandle.writeSettings(generic);
 		loaded = false;
 	}

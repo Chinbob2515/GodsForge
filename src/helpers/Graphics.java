@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
@@ -120,12 +121,12 @@ public class Graphics {
     	 
 		try {
 			Display.setInitialBackground(255, 255, 255);
-			Display.setDisplayMode(settings[2]==0?backupDisplayMode:displayMode);
-			RWIDTH = (settings[2]==0?backupDisplayMode:displayMode).getWidth();
-			RHEIGHT = (settings[2]==0?backupDisplayMode:displayMode).getHeight();
+			Display.setDisplayMode(settings[2]==1?backupDisplayMode:displayMode);
+			RWIDTH = (settings[2]==1?backupDisplayMode:displayMode).getWidth();
+			RHEIGHT = (settings[2]==1?backupDisplayMode:displayMode).getHeight();
 			Display.setResizable(true);
 			Display.setLocation(0, 0);
-			Display.setFullscreen(settings[2] == 0);
+			Display.setFullscreen(settings[2] == 1);
 			Display.setTitle("Gods' Forge");
 	        try {
 				Display.setIcon(new ByteBuffer[] {
@@ -160,6 +161,19 @@ public class Graphics {
 			e1.printStackTrace();
 		}
 		return answer;
+	}
+	
+	public static void setFullscreen(boolean full){
+		try {
+			Display.setFullscreen(full);
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+		RWIDTH = Display.getWidth();
+        RHEIGHT = Display.getHeight();
+
+        GL11.glViewport(0, 0, RWIDTH, RHEIGHT);
+        GL11.glLoadIdentity();
 	}
 	
 	public static int fontWidth(int font, String text){

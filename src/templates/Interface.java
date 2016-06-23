@@ -14,7 +14,7 @@ public class Interface {
 	protected Texture background;
 	protected int type; // Absolute, ratio
 	
-	private int x, y, width, height;
+	protected int x, y, width, height;
 
 	public boolean quit, hover, focus;
 	public String text;
@@ -107,6 +107,9 @@ public class Interface {
 		}
 		return false;
 	}
+	
+	public void onButton(int key, boolean status){}
+	public void onButton(boolean status){}
 	
 	public void response(int eventKey){
 		if(quit){parent.run = false;}

@@ -13,6 +13,7 @@ import static helpers.Graphics.WIDTH;
 
 import java.util.ArrayList;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -27,6 +28,7 @@ public class Screen {
 	protected ArrayList<Integer[]> dynamics;
 	
 	private boolean setted;
+	private Interface focused;
 	protected boolean run;
 	public int translate_x = 0, translate_y = 0, mousex = 0, mousey = 0;
 	
@@ -104,11 +106,29 @@ public class Screen {
 				for(Interface inter: clicksOn){
 					if(inter.zindex > max){max = inter.zindex;}
 				}
+				int id = -1;
+				focused = null;
 				for(Interface inter: clicksOn){
 					if(inter.zindex == max){
 						inter.response(eventKey);
+						inter.focus = true;
+						id = inter.id;
+						focused = inter;
+						break;
 					}
 				}
+				for(Interface inter: interfaces){
+					if(inter.id != id){
+						inter.focus = false;
+					}
+				}
+				
+			}
+		}
+		Keyboard.poll();
+		while(Keyboard.next()){
+			if(focused != null){
+				focused.onButton(Keyboard.getEventKey(), Keyboard.getEventKeyState());
 			}
 		}
 	}

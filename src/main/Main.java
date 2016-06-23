@@ -14,16 +14,9 @@ public class Main extends Screen{
 				new Interface(null, "Settings", 0.5, 0.6, 0.1, 0.1),
 				new Interface(null, "Quit", 0.5, 0.8, 0.1, 0.1)
 		};
+		interfaces[0].launchScreen = new Connect();
 		interfaces[2].launchScreen = new Setting();
 		interfaces[3].quit = true;
-	}
-	
-	public void run(){
-		start();
-		while(run){
-			check();
-			render();
-		}
 	}
 
 }

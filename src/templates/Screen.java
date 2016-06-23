@@ -83,7 +83,13 @@ public class Screen {
 		run = true;
 	}
 	
-	public void run(){start();}
+	public void run(){
+		start();
+		while(run){
+			check();
+			render();
+		}
+	}
 	
 	public void check(){
 		Mouse.poll();

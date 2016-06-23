@@ -1,9 +1,5 @@
 package main;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-
 import templates.Interface;
 import templates.Screen;
 import helpers.Graphics;
@@ -21,7 +17,7 @@ public class Setting extends Screen{
 						setEnd();
 						Graphics.setFullscreen(info[0]==1);
 					}
-					public void setEnd(){this.adds[0] = (this.info[0] == 1?"On":"Off");}
+					public void setEnd(){adds[0] = (info[0] == 1?"On":"Off");}
 				},
 				new Interface(null, "Back", 0.0, 0.9, 0.0, 0.0)
 		};
@@ -38,7 +34,6 @@ public class Setting extends Screen{
 			render();
 		}
 		Settings.generic[2] = interfaces[0].info[0];
-		System.out.println(Settings.generic[2]);
 	}
 
 }

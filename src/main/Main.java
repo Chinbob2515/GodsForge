@@ -8,9 +8,14 @@ public class Main extends Screen{
 
 	public Main() {
 		super(Graphics.loadTex("black"));
-		interfaces = new Interface[]{new Interface(null, "Play", 0.5, 0.25, 0.1, 0.1),new Interface(null, "Settings", 0.5, 0.5, 0.1, 0.1),new Interface(null, "Quit", 0.5, 0.75, 0.1, 0.1)};
-		interfaces[1].launchScreen = new Setting();
-		interfaces[2].quit = true;
+		interfaces = new Interface[]{
+				new Interface(null, "Play online", 0.5, 0.2, 0.1, 0.1),
+				new Interface(null, "Play offline", 0.5, 0.4, 0.1, 0.1),
+				new Interface(null, "Settings", 0.5, 0.6, 0.1, 0.1),
+				new Interface(null, "Quit", 0.5, 0.8, 0.1, 0.1)
+		};
+		interfaces[2].launchScreen = new Setting();
+		interfaces[3].quit = true;
 	}
 	
 	public void run(){

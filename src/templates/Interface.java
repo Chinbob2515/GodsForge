@@ -16,13 +16,13 @@ public class Interface {
 	
 	private int x, y, width, height;
 
-	public boolean quit, hover;
+	public boolean quit, hover, focus;
 	public String text;
 	public int[] addi, info;
 	public String[] adds;
 	public double dx, dy, dwidth, dheight;
 	public Screen launchScreen, parent;
-	public int id;
+	public int id, zindex = 0;
 	
 	public Interface(Texture tex, String words, int x, int y, int width, int height){
 		background = tex;
@@ -101,10 +101,11 @@ public class Interface {
 		return new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
 	
-	public void onClick(int a, int b, int eventKey){
+	public boolean onClick(int a, int b, int eventKey){
 		if(a>getX() && a<getX()+getWidth() && b>getY() && b<getY()+getHeight()){
-			response(eventKey);
+			return true;
 		}
+		return false;
 	}
 	
 	public void response(int eventKey){

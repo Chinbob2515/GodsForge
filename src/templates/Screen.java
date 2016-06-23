@@ -96,8 +96,18 @@ public class Screen {
 		while(Mouse.next()){
 			if(Mouse.getEventButtonState()){
 				int eventKey = Mouse.getEventButton();
+				ArrayList<Interface> clicksOn = new ArrayList<Interface>();
 				for(Interface inter: interfaces){
-					inter.onClick(mousex, mousey, eventKey);
+					if(inter.onClick(mousex, mousey, eventKey)){clicksOn.add(inter);}
+				}
+				int max = -3;
+				for(Interface inter: clicksOn){
+					if(inter.zindex > max){max = inter.zindex;}
+				}
+				for(Interface inter: clicksOn){
+					if(inter.zindex == max){
+						inter.response(eventKey);
+					}
 				}
 			}
 		}

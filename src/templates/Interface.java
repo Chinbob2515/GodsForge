@@ -17,32 +17,28 @@ public class Interface {
 	protected int x, y, width, height;
 
 	public boolean quit, hover, focus;
-	public String text;
 	public int[] addi, info;
 	public String[] adds;
 	public double dx, dy, dwidth, dheight;
 	public Screen launchScreen, parent;
 	public int id, zindex = 0;
 	
-	public Interface(Texture tex, String words, int x, int y, int width, int height){
+	public Interface(Texture tex, int x, int y, int width, int height){
 		background = tex;
-		text = words;
 		type = 0;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.id = assignID();
-		if(words != null)
-			this.hover = true;
 	}
 	
-	public Interface(Texture tex, String words, double x, double y, double width, double height){
+	public Interface(Texture tex, double x, double y, double width, double height){
 		background = tex;
 		text = words;
 		this.type = 1;
 		if(words != null){
-			width = (float)(Graphics.fontWidth(0, words))/Graphics.WIDTH;
+			width = (float)(Graphics.fontWidth(0, text))/Graphics.WIDTH;
 			height = (float)(Graphics.fontHeight(0, text))/Graphics.HEIGHT;
 		}
 		this.dx = x - width/2;

@@ -35,12 +35,7 @@ public class Interface {
 	
 	public Interface(Texture tex, double x, double y, double width, double height){
 		background = tex;
-		text = words;
 		this.type = 1;
-		if(words != null){
-			width = (float)(Graphics.fontWidth(0, text))/Graphics.WIDTH;
-			height = (float)(Graphics.fontHeight(0, text))/Graphics.HEIGHT;
-		}
 		this.dx = x - width/2;
 		this.dy = y - height/2;
 		if(this.dx > 1)
@@ -54,8 +49,6 @@ public class Interface {
 		this.dwidth = width;
 		this.dheight = height;
 		this.id = assignID();
-		if(words != null)
-			this.hover = true;
 	}
 	
 	public static int assignID(){
@@ -65,24 +58,6 @@ public class Interface {
 	public void render(){
 		if(background != null){
 			Draw.renderthistex(getRectangle(), background);
-		}
-		if(text != null){
-			String draw = text;
-			if(addi != null){
-				draw = draw + addi[0];
-			}
-			if(adds != null){
-				draw = draw + adds[0];
-			}
-			if(hover){
-				if(inside(parent.mousex, parent.mousey)){
-					Graphics.fonts[0].drawString(getX(), getY(), draw, new Color(0, 0, 0));
-				}else{
-					Graphics.fonts[0].drawString(getX(), getY(), draw);
-				}
-			}else{
-				Graphics.fonts[0].drawString(getX()-Graphics.fontWidth(0, draw)/2, getY()-Graphics.fontHeight(0, draw)/2, draw);
-			}
 		}
 	}
 	

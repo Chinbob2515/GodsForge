@@ -5,13 +5,14 @@ import helpers.Graphics;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.Texture;
 
 public class TypeField extends Interface{
 
-	private String defString;
+	private String defString, text;
 	
-	public TypeField(Color col, String def, double x, double y, double width, double height) {
-		super(Graphics.loadTex("inv"), null, x, y, width, height);
+	public TypeField(Texture tex, String def, double x, double y, double width, double height) {
+		super(Graphics.loadTex("inv"), x, y, width, height);
 		defString = def; // string to show when there is no other
 		text = "";
 	}

@@ -3,7 +3,6 @@ package main;
 import templates.Interface;
 import templates.Screen;
 import templates.TextField;
-import templates.TypeField;
 import helpers.Graphics;
 
 public class Main extends Screen{

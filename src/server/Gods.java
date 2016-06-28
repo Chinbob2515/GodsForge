@@ -3,7 +3,7 @@ package server;
 import java.util.ArrayList;
 import java.io.PrintWriter;
 
-public class Model extends Thread implements GameI{
+public class Gods extends Thread implements GameI{
 
 	public static final int nInGame = 6;
 	public static int updateInterval;
@@ -16,15 +16,15 @@ public class Model extends Thread implements GameI{
 	public boolean runB = true, hi = false;
 	public ArrayList<String> send = new ArrayList<String>();
 
-	public Model(PrintWriter out, int id){
+	public Gods(PrintWriter out, int id){
 		this.out = out;
-		Model.id = id;
+		Gods.id = id;
 		this.playern = clients % nInGame;
 		clients++;
 	}
 
 	public void run(){
-		System.out.println("Model started");
+		System.out.println("Gods started");
 		if(spins.size() * nInGame < clients){
 			System.out.println("new Spin started " + spins.size() +" "+ nInGame + " " + clients);
 			spins.add(new Spin(this));
@@ -160,7 +160,7 @@ public class Model extends Thread implements GameI{
 	    Spin.interval = Integer.parseInt(Server.msettings.get("warmup_interval"));
 	    Spin.baseWarmup = Integer.parseInt(Server.msettings.get("warmup_start"));
 	    Spin.minPlayers = Integer.parseInt(Server.msettings.get("min_players"));
-		System.out.println("Model game started");
+		System.out.println("Gods game started");
 	}
 
 }

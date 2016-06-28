@@ -158,12 +158,12 @@ public class Game {
 
 		// Soldiers
 
-		if(time - last > Model.updateInterval){
+		if(time - last > Gods.updateInterval){
             spin.sendAll(12, null, null);
 			for(Country country: countries){
 				country.update();
 			}
-			last += Model.updateInterval;
+			last += Gods.updateInterval;
 		}
 
 		for(Country country: countries){

@@ -1,7 +1,6 @@
 package templates;
 
 import org.lwjgl.util.Rectangle;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
 import helpers.Draw;

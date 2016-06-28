@@ -14,7 +14,7 @@ public class Server extends Thread {
 
 	public static void main(String[] args) throws IOException {
 
-        try {
+        /*try {
             FileOutputStream fos = new FileOutputStream(new java.io.File("logs/log"+System.currentTimeMillis()+".txt"));
             //we will want to print in standard "System.out" and in "file"
             TeeOutputStream myOut=new TeeOutputStream(System.out, fos);
@@ -23,18 +23,18 @@ public class Server extends Thread {
             System.setErr(ps);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
-		System.out.println("Starting server...");
+		//System.out.println("Starting server...");
 
 		Server server = new Server();
 		server.start();
 
-		System.out.println("Setting up game classes...");
+		//System.out.println("Setting up game classes...");
 		msettings = IOHandle.getMultiSettings();
 
 		Echo.main(null);
-		Model.main(null);
+		Gods.main(null);
 
 		System.out.println("Game classes set up");
 

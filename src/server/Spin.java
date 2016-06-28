@@ -9,24 +9,24 @@ public class Spin extends Thread{
     public static int minPlayers;
     public static boolean modded = false;
 
-	public Model[] players = new Model[Model.nInGame];
+	public Gods[] players = new Gods[Gods.nInGame];
 	public int nPlayers = 0;
 	public float warmup = baseWarmup; //Seconds
 	public boolean runb = true, gameStarted = false;
-	public int[] countries = new int[Model.nInGame];
-	public int[] playersc = new int[Model.nInGame];
+	public int[] countries = new int[Gods.nInGame];
+	public int[] playersc = new int[Gods.nInGame];
 	public Game game;
 
-	public Spin(Model model){
-		addPlayer(model);
+	public Spin(Gods gods){
+		addPlayer(gods);
 		for(int i = 0; i != players.length; i++){
 			countries[i] = -1;
 			playersc [i] = -1;
 		}
 	}
 
-	public void addPlayer(Model model){
-		players[nPlayers++] = model;
+	public void addPlayer(Gods gods){
+		players[nPlayers++] = gods;
 		sendPlayer(nPlayers - 1, 0, null, null);
 	}
 

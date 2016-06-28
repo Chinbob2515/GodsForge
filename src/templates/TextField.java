@@ -20,7 +20,7 @@ public class TextField extends Interface{
 	}
 	
 	public TextField(Texture tex, String words, double x, double y, double width, double height){
-		super(tex, x, y, width, height);
+		super(tex, x, y, (float)(Graphics.fontWidth(0, words))/Graphics.WIDTH, (float)(Graphics.fontHeight(0, words))/Graphics.HEIGHT);
 		text = words;
 		if(words != null){
 			width = (float)(Graphics.fontWidth(0, text))/Graphics.WIDTH;

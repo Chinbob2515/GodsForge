@@ -114,7 +114,7 @@ public class Handler extends Thread{
 					gameO.start();
 					break;
 				case 1:
-					gameO = new Model(out, number);
+					gameO = new Gods(out, number);
 					gameO.start();
 					break;
 				}

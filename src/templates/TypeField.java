@@ -13,7 +13,7 @@ public class TypeField extends Interface{
 	private String defString, text;
 	
 	public TypeField(Texture tex, String def, double x, double y, double width, double height) {
-		super(Graphics.loadTex("inv"), x, y, width, height);
+		super(Graphics.loadTex("inv"), x, y, (float)(Graphics.fontWidth(0, def))/Graphics.WIDTH, (float)(Graphics.fontHeight(0, def))/Graphics.HEIGHT);
 		defString = def; // string to show when there is no other
 		text = "";
 	}
@@ -21,9 +21,9 @@ public class TypeField extends Interface{
 	public void render(){
 		Draw.drawSquare(x-width/2, y-height/2, width, height);
 		if(!text.equals("")){
-			Graphics.fonts[0].drawString(getX()-Graphics.fontWidth(0, text)/2, getY()-height/2, text);
+			Graphics.fonts[0].drawString(getX()/*-Graphics.fontWidth(0, text)/2*/, getY()/*-height/2*/, text);
 		} else {
-			Graphics.fonts[0].drawString(getX()-Graphics.fontWidth(0, defString)/2, getY()-height/2, defString, new Color(255, 255, 255, 125));
+			Graphics.fonts[0].drawString(getX()/*-Graphics.fontWidth(0, defString)/2*/, getY()/*-height/2*/, defString, new Color(255, 255, 255, 125));
 		}
 	}
 	

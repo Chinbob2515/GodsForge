@@ -43,7 +43,9 @@ public class Connect extends Screen{
 			if(result == 0){
 				run = false;
 				parent.interfaces[0].setValue("Try with a BETTER ip");
+				return;
 			}
+			new UserInput().run();
 		}
 		
 	}

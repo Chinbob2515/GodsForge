@@ -24,11 +24,6 @@ public class Connection {
 			out = new PrintWriter(echoSocket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 			out.println("game 1");
-			/*String userInput;
-			while ((userInput = stdIn.readLine()) != null) {
-				out.println(userInput);
-				System.out.println("echo: " + in.readLine());
-			}*/
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + hostName);
 			return 0;
@@ -37,6 +32,19 @@ public class Connection {
 			return 0;
 		} 
 		return 1;
+	}
+	
+	public static String receive(){
+		try {
+			return in.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static void write(String string){
+		out.println(string);
 	}
 	
 	public static void quit(){

@@ -74,4 +74,14 @@ public class Auth {
 		}
 	}
 	
+	public boolean checkAuth(String user, String pass){
+		for(int i = 0; i != count; i++){
+			if(userNames[i].equals(user)){
+				if(passKeys[i].equals(pass))
+					return true;
+			}
+		}
+		return false;
+	}
+	
 }

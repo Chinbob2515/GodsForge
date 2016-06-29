@@ -18,7 +18,6 @@ public class Main extends Screen{
 					public void response(int eventKey){
 						Settings.online = false;
 						Server.main(new String[]{"false"});
-						System.out.println("GOT TO THIS");
 						Connection.connect("localhost");
 						launchScreen = new UserInput();
 						launchScreen.parent = parent;

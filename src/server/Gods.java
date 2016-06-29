@@ -13,18 +13,23 @@ public class Gods extends Thread implements GameI{
 	public static ArrayList<Spin> spins = new ArrayList<Spin>();
 	private Spin spin;
 	private PrintWriter out;
-	public boolean runB = true, hi = false;
+	public boolean runB = true, hi = false, observe = true;
 	public ArrayList<String> send = new ArrayList<String>();
 
 	public Gods(PrintWriter out, int id){
 		this.out = out;
-		Gods.id = id;
+		Gods.id = id; // Just what? Static ID tracker?
 		this.playern = clients % nInGame;
 		clients++;
 	}
 
 	public void run(){
 		System.out.println("Gods started");
+		while(observe){
+			
+		}
+		// CURRENT LIMIT OF ADAPTION TO GODSFORGE
+		
 		if(spins.size() * nInGame < clients){
 			System.out.println("new Spin started " + spins.size() +" "+ nInGame + " " + clients);
 			spins.add(new Spin(this));
@@ -75,15 +80,27 @@ public class Gods extends Thread implements GameI{
         out.println(string);
 	}
 
+	@SuppressWarnings("unused")
 	public void receive(String string){
 	    int subpro, x, y, id, country, country2, reserve;
 		send.add(string);
-		hi = true;
+		//hi = true; Probably an old indicator? IDK?
 		String[] strings = string.split(":");
 		int protocol = Integer.parseInt(strings[0]);
 		strings = strings[1].split(";");
 		switch(protocol){
-		case 0:
+		case 0: // Request update for game information.
+			String str = "0:";
+			for(Spin spin: spins){
+				str += spin.players.length+"."+spin.rounds+";";
+			}
+			out.println(str);
+			break;
+		case 1: // Enter a game.
+			spin = spins.get(Integer.parseInt(strings[0]));
+			observe = false;
+			break;
+		/*case 0:
 			System.out.println(playern +" choosing country");
 			spin.chooseCountry(playern, Integer.parseInt(strings[0]));
 			break;
@@ -145,7 +162,7 @@ public class Gods extends Thread implements GameI{
             country = Integer.parseInt(strings[1]);
             country2 = Integer.parseInt(strings[2]);
             spin.game.setWar(country, country2, subpro==1);
-            break;
+            break;*/ // Let's just gut the whole list of cases, and hope.
 		}
 		System.out.println("received string "+string);
 	}

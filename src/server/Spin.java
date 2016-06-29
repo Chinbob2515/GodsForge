@@ -10,7 +10,7 @@ public class Spin extends Thread{
     public static boolean modded = false;
 
 	public Gods[] players = new Gods[Gods.nInGame];
-	public int nPlayers = 0;
+	public int nPlayers = 0, rounds = 0;
 	public float warmup = baseWarmup; //Seconds
 	public boolean runb = true, gameStarted = false;
 	public int[] countries = new int[Gods.nInGame];

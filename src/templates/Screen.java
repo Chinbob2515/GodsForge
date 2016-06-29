@@ -113,7 +113,6 @@ public abstract class Screen {
 				focused = null;
 				for(Interface inter: clicksOn){
 					if(inter.zindex == max){
-						System.out.println("doing that thing, you know?");
 						inter.response(eventKey);
 						inter.focus = true;
 						id = inter.id;

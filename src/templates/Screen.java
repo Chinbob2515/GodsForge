@@ -128,6 +128,9 @@ public abstract class Screen {
 				
 			}
 		}
+		int dWheel = Mouse.getDWheel();
+		if(focused != null)
+			focused.onScroll(dWheel);
 		Keyboard.poll();
 		while(Keyboard.next()){
 			int key = Keyboard.getEventKey();
@@ -153,7 +156,7 @@ public abstract class Screen {
 	
 	public void setParent(){
 		for(Interface inter: interfaces){
-			inter.parent = this;
+			inter.setParent(this);
 		}
 	}
 	

@@ -20,15 +20,22 @@ public class UserInput extends Screen{
 				new TextField(null, "Login", 0.3, 0.8, 0, 0){
 					public void response(int eventKey){
 						Connection.write("1 "+interfaces[1].getValue()+" "+interfaces[2].getValue());
+						//parent.onEnd();
+						launchScreen.parent = parent;
+						launchScreen.run();
 					}
 				},
 				new TextField(null, "Register", 0.7, 0.8, 0, 0){
 					public void response(int eventKey){
 						Connection.write("0 "+interfaces[1].getValue()+" "+interfaces[2].getValue());
+						//parent.onEnd();
+						launchScreen.parent = parent;
+						launchScreen.run();
 					}
 				},
 				new TextField(null, "Back", 0.0, 1, 0, 0)
 		};
+		interfaces[3].launchScreen = interfaces[4].launchScreen = new Browse();
 		interfaces[5].quit = true;
 	}
 	

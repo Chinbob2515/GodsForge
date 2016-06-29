@@ -80,6 +80,7 @@ public abstract class Interface {
 	
 	public void onButton(int key, boolean status){}
 	public void onButton(boolean status){}
+	public void onScroll(int dwheel){}
 	
 	public void response(int eventKey){
 		if(quit){parent.run = false;}
@@ -89,6 +90,8 @@ public abstract class Interface {
 			launchScreen.run();
 		}
 	};
+	
+	public void setParent(Screen screen){parent = screen;}
 	
 	public String getValue(){if(adds != null) return adds[0]; return null;}
 	public void setValue(String value){if(adds != null)adds[0] = value;}

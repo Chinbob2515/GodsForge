@@ -25,9 +25,6 @@ public class Game {
 
 	public boolean[][] wars;
 
-	// This was a cheat I should never have used...
-	//public static Game mthis;
-
 	public Country[] countries = new Country[6];
 
 	public boolean retry = false, showbd = false, PAUSE = false, wintrip = false;

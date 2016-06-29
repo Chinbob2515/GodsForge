@@ -6,7 +6,7 @@ import org.newdawn.slick.opengl.Texture;
 import helpers.Draw;
 import helpers.Graphics;
 
-public class Interface {
+public abstract class Interface {
 	
 	private static int ID = 0;
 	
@@ -16,8 +16,8 @@ public class Interface {
 	protected int x, y, width, height;
 
 	public boolean quit, hover, focus;
-	public int[] addi, info;
-	public String[] adds;
+	public int[] addi, info; // Only first element matters, meant
+	public String[] adds; //    to function like a pointer.
 	public double dx, dy, dwidth, dheight;
 	public Screen launchScreen, parent;
 	public int id, zindex = 0;
@@ -37,12 +37,12 @@ public class Interface {
 		this.type = 1;
 		this.dx = x - width/2;
 		this.dy = y - height/2;
-		if(this.dx > 1)
-			this.dx = 1;
+		if(this.dx+width > 1)
+			this.dx = 1 - width;
 		else if(this.dx < 0)
 			this.dx = 0;
-		if(this.dy > 1)
-			this.dy = 1;
+		if(this.dy+height > 1)
+			this.dy = 1-height;
 		else if(this.dy < 0)
 			this.dy = 0;
 		this.dwidth = width;
@@ -84,9 +84,14 @@ public class Interface {
 	public void response(int eventKey){
 		if(quit){parent.run = false;}
 		if(launchScreen != null){
+			parent.onEnd();
+			launchScreen.parent = parent;
 			launchScreen.run();
 		}
 	};
+	
+	public String getValue(){if(adds != null) return adds[0]; return null;}
+	public void setValue(String value){if(adds != null)adds[0] = value;}
 	
 	public int getX(){if(type == 0){return x;}else{return (int) (dx*Graphics.WIDTH);}}
 	public int getY(){if(type == 0){return y;}else{return (int) (dy*Graphics.HEIGHT);}}

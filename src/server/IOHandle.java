@@ -39,6 +39,15 @@ public class IOHandle{
         }
         return out.toString();
     }
+    
+    public static String slurp(String loc){
+    	try {
+			return slurp(new FileInputStream(loc));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return "";
+		}
+    }
 
     public static HashMap<String, String> getMultiSettings(){
     	HashMap<String, String> answers = new HashMap<String, String>();

@@ -20,7 +20,7 @@ public class Setting extends Screen{
 					}
 					public void setEnd(){adds[0] = (info[0] == 1?"On":"Off");}
 				},
-				new TextField(null, "Back", 0.0, 0.9, 0.0, 0.0)
+				new TextField(null, "Back", 0.0, 1.0, 0.0, 0.0)
 		};
 		interfaces[1].quit = true;
 		interfaces[0].info = new int[]{Settings.generic[2]};
@@ -28,12 +28,7 @@ public class Setting extends Screen{
 		interfaces[0].response(0);interfaces[0].response(0);
 	}
 	
-	public void run(){
-		start();
-		while(run){
-			check();
-			render();
-		}
+	public void onEnd(){
 		Settings.generic[2] = interfaces[0].info[0];
 	}
 

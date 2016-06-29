@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
-public class Screen {
+public abstract class Screen {
 	
 	private Texture background;
 	protected Texture[] textures;
@@ -30,15 +30,17 @@ public class Screen {
 	private boolean setted;
 	private Interface focused;
 	protected boolean run;
+	protected Screen parent;
 	public int translate_x = 0, translate_y = 0, mousex = 0, mousey = 0;
 	
-	protected Interface[] interfaces;
+	public Interface[] interfaces;
 	
 	public Screen(Texture background){
 		this.background = background;
 		statics = new ArrayList<Integer[]>();
 		dynamics = new ArrayList<Integer[]>();
 		Settings.screens.add(this);
+		interfaces = new Interface[0]; // To prevent null pointer exceptions
 	}
 	
 	protected void render(){
@@ -91,6 +93,7 @@ public class Screen {
 			check();
 			render();
 		}
+		onEnd();
 	}
 	
 	public void check(){
@@ -127,8 +130,13 @@ public class Screen {
 		}
 		Keyboard.poll();
 		while(Keyboard.next()){
+			int key = Keyboard.getEventKey();
+			boolean state = Keyboard.getEventKeyState();
+			if(key == Keyboard.KEY_ESCAPE && state){
+				onEscapeButton();
+			}
 			if(focused != null){
-				focused.onButton(Keyboard.getEventKey(), Keyboard.getEventKeyState());
+				focused.onButton(key, state);
 			}
 		}
 	}
@@ -136,6 +144,12 @@ public class Screen {
 	public void render2(){
 		
 	}
+	
+	public void onEscapeButton(){
+		run = false;
+	}
+	
+	public void onEnd(){};
 	
 	public void setParent(){
 		for(Interface inter: interfaces){

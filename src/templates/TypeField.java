@@ -8,6 +8,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
 public class TypeField extends Interface{
+	// For interactive text input.
 
 	private String defString, text;
 	
@@ -31,11 +32,21 @@ public class TypeField extends Interface{
 		String typed = Keyboard.getKeyName(key).toLowerCase(); // typed representation of the character ("b", "a", "back")
 		if(typed.length() > 1){ // If the character isn't a conventional character, it will be a word rather than a single character
 			if(typed.equals("period")){text += ".";}
-			if(text.length() == 0){return;}
-			if(typed.equals("back")){text = text.substring(0, text.length()-1);}
+			if(typed.equals("back")){
+				if(text.length() == 0){return;}
+				text = text.substring(0, text.length()-1);
+			}
 			return;
 		}
-		text += typed;
+		text += typed; // Normal characters just get typed- I don't know of any which can't be in a url, or care.
+	}
+	
+	public String getValue(){
+		return text;
+	}
+	
+	public void setValue(String value){
+		text = value;
 	}
 
 }

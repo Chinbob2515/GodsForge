@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Scanner;
-import org.apache.commons.io.output.TeeOutputStream;
+//import org.apache.commons.io.output.TeeOutputStream;
 
 public class Server extends Thread {
 
@@ -14,7 +14,7 @@ public class Server extends Thread {
 
 	public static void main(String[] args) throws IOException {
 
-        /*try {
+        /*try { THIS STUFF JUST LOGS ALL THE OUTPUT FROM SYSOUT TO A FILE AS WELL- IT'S TOO ANOYING RIGHT NOW
             FileOutputStream fos = new FileOutputStream(new java.io.File("logs/log"+System.currentTimeMillis()+".txt"));
             //we will want to print in standard "System.out" and in "file"
             TeeOutputStream myOut=new TeeOutputStream(System.out, fos);

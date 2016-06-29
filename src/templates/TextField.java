@@ -15,19 +15,17 @@ public class TextField extends Interface{
 		text = words;
 		this.width = width;
 		this.height = height;
-		if(words != null)
-			this.hover = true;
+		this.hover = true;
 	}
 	
 	public TextField(Texture tex, String words, double x, double y, double width, double height){
 		super(tex, x, y, (float)(Graphics.fontWidth(0, words))/Graphics.WIDTH, (float)(Graphics.fontHeight(0, words))/Graphics.HEIGHT);
 		text = words;
-		if(words != null){
-			width = (float)(Graphics.fontWidth(0, text))/Graphics.WIDTH;
-			height = (float)(Graphics.fontHeight(0, text))/Graphics.HEIGHT;
-		}
-		if(words != null)
-			this.hover = true;
+		//	width = (float)(Graphics.fontWidth(0, text))/Graphics.WIDTH;
+		//	height = (float)(Graphics.fontHeight(0, text))/Graphics.HEIGHT;
+		this.hover = true;
+		if(dy + height/2 > 1.0)
+			dy = 1.0-height/2;
 	}
 	
 	public void render(){

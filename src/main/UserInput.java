@@ -1,7 +1,7 @@
 package main;
 
+import helpers.Connection;
 import helpers.Graphics;
-
 import templates.Interface;
 import templates.Screen;
 import templates.TextField;
@@ -18,6 +18,10 @@ public class UserInput extends Screen{
 				new TextField(null, "Login", 0.3, 0.8, 0, 0),
 				new TextField(null, "Register", 0.7, 0.8, 0, 0)
 		};
+	}
+	
+	public void onEnd(){
+		Connection.quit();
 	}
 
 }

@@ -59,11 +59,17 @@ public class Server extends Thread {
 
         ArrayList<Handler> echos = new ArrayList<Handler>();
         int i = 0;
+        
+		ServerSocket serverSocket = null;
+		try {
+			serverSocket = new ServerSocket(portNumber);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+        System.out.println("Server socket started.");
 
         while(run){
         	try{
-        		ServerSocket serverSocket = new ServerSocket(portNumber);
-                System.out.println("Server socket started.");
                 echos.add(new Handler(serverSocket.accept()));
        	    	echos.get(i).start();
        	    	i++;

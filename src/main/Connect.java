@@ -2,6 +2,7 @@ package main;
 
 import helpers.Connection;
 import helpers.Graphics;
+import helpers.Settings;
 import templates.Interface;
 import templates.Screen;
 import templates.TextField;
@@ -13,6 +14,7 @@ public class Connect extends Screen{
 	
 	public Connect() {
 		super(Graphics.loadTex("black"));
+		Settings.online = true;
 		interfaces = new Interface[]{
 				new TypeField(null, "Enter ip of server here", 0.5, 0.5, 0.1, 0.1),
 				new TextField(null, "Connect to a server", 0.5, 0.0, 0.1, 0.1),

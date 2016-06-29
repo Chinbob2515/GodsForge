@@ -14,6 +14,7 @@ public class Settings {
 	
 	public static Random random;
 	public static int[] generic;
+	public static boolean online;
 	
 	public static void init(){
 		random = new Random();

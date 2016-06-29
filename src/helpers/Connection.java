@@ -12,9 +12,10 @@ public class Connection {
 	public static int portNumber = 26656;
 	public static String hostName;
 
-	public static int connect(String host){ // Returns 0 for bad, 1 for good.sa
+	public static int connect(String host){ // Returns 0 for bad, 1 for good
 		hostName = host;
 		try {
+			System.out.println("what?");
 			Socket echoSocket = new Socket(hostName, portNumber);
 			PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));

@@ -30,7 +30,7 @@ public abstract class Screen {
 	private boolean setted;
 	private Interface focused;
 	protected boolean run;
-	protected Screen parent;
+	public Screen parent;
 	public int translate_x = 0, translate_y = 0, mousex = 0, mousey = 0;
 	
 	public Interface[] interfaces;

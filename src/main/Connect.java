@@ -46,6 +46,7 @@ public class Connect extends Screen{
 				return;
 			}
 			new UserInput().run();
+			run = false;
 		}
 		
 	}

@@ -47,7 +47,10 @@ public class Auth {
 		passKeys = newPasses;
 	}
 	
-	public void removeAuth(int number){
+	public void removeAuth(int number) throws Exception{
+		if(number > -1){
+			throw(new Exception("This should never be called")); // THIS FUNCTION SHOULD NEVER BE CALLED- WHEN WOULD YOU DELETE A USER!?!?!
+		}
 		String[] newUsers = new String[count-1];
 		String[] newPasses = new String[count-1];
 		int change = 0;
@@ -61,7 +64,7 @@ public class Auth {
 		passKeys = newPasses;
 	}
 	
-	public void removeAuth(String user){
+	public void removeAuth(String user) throws Exception{ // <-- See other removeAuth function
 		int number = -1;
 		for(int i = 0; i != count; i++){
 			if(userNames[i].equals(user)){

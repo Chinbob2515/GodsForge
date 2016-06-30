@@ -5,68 +5,87 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Scanner;
+
+import org.apache.commons.io.output.TeeOutputStream;
 //import org.apache.commons.io.output.TeeOutputStream;
 
 public class Server extends Thread {
 
-	public static boolean run = true;
+	public static final boolean LOG = false, LOGTOFILE = false;
+	public static boolean run = true, doEnd, inProccess;
 	public static HashMap<String, String> msettings;
+	
+	public static ServerSocket serverSocket;
 
 	public static void main(String[] args){ // new String[]{(boolean autonomous)}
 
-        /*try { // THIS STUFF JUST LOGS ALL THE OUTPUT FROM SYSOUT TO A FILE AS WELL- IT'S TOO ANOYING RIGHT NOW
-            FileOutputStream fos = new FileOutputStream(new java.io.File("logs/log"+System.currentTimeMillis()+".txt"));
-            //we will want to print in standard "System.out" and in "file"
-            TeeOutputStream myOut=new TeeOutputStream(System.out, fos);
-            PrintStream ps = new PrintStream(myOut);
-            System.setOut(ps);
-            System.setErr(ps);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+		if(LOGTOFILE){
+			try { // THIS STUFF JUST LOGS ALL THE OUTPUT FROM SYSOUT TO A FILE AS WELL- IT'S TOO ANOYING RIGHT NOW
+            	FileOutputStream fos = new FileOutputStream(new java.io.File("logs/log"+System.currentTimeMillis()+".txt"));
+            	//we will want to print in standard "System.out" and in "file"
+            	TeeOutputStream myOut=new TeeOutputStream(System.out, fos);
+            	PrintStream ps = new PrintStream(myOut);
+            	System.setOut(ps);
+            	System.setErr(ps);
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
+		}
+        
+		if(inProccess){
+			log("ALREADY RUNNING, YOU SCRUB");
+			return;
+		}
+		inProccess = true;
+		
 		Server server = new Server();
 		server.start();
 
 		if(args.length == 0 || args[0].equals("true")){
+			doEnd = true;
 	        Scanner scan = new Scanner(System.in);
 			if(scan.nextLine().equals("restart")){
 	            try{
 	                Runtime.getRuntime().exec("java Server"); // This does it silently- TODO NOISY
 	            }catch(IOException e){
-	            	System.out.println("Restart failed");
+	            	log("Restart failed");
 	            }
 			}
 			Server.end();
 		}
 		
     }
+	
+	public static void log(String s){
+		if(LOG){System.out.println("Server: "+s);}
+	}
 
 	public Server(){}
 
 	public void run(){
-		//System.out.println("Starting server...");
+		log("Starting server...");
 		
 
-		//System.out.println("Setting up game classes...");
+		log("Setting up game classes...");
 		msettings = IOHandle.getMultiSettings();
 
 		Echo.main(null);
 		Gods.main(null);
 
-		System.out.println("Game classes set up");
+		log("Game classes set up");
 
         int portNumber = Integer.parseInt(msettings.get("port"));
 
         ArrayList<Handler> echos = new ArrayList<Handler>();
         int i = 0;
         
-		ServerSocket serverSocket = null;
+		serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(portNumber);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-        System.out.println("Server socket started.");
+        log("Server socket started.");
 
         while(run){
         	try{
@@ -74,8 +93,8 @@ public class Server extends Thread {
        	    	echos.get(i).start();
        	    	i++;
        	    } catch (IOException e) {
-       	    	System.out.println("Exception caught when trying to listen on port " + portNumber + " or listening for a connection");
-        	    System.out.println(e.getMessage());
+       	    	log("Exception caught when trying to listen on port " + portNumber + " or listening for a connection");
+        	    log(e.getMessage());
         	}
 
         }
@@ -84,8 +103,15 @@ public class Server extends Thread {
 	public static void end(){
 		Handler.write("Server stopping, bye.");
 		run = false;
-		System.out.println("Stopping server!");
-		System.exit(0);
+		log("Stopping server!");
+		inProccess = false;
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if(doEnd)
+			System.exit(0);
 	}
 
 }

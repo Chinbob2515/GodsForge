@@ -10,12 +10,13 @@ public abstract class Interface {
 	
 	private static int ID = 0;
 	
+	public boolean LOG;
 	protected Texture background;
 	protected int type; // Absolute, ratio
 	
 	protected int x, y, width, height;
 
-	public boolean quit, hover, focus;
+	public boolean quit, hover, focus, detailedResponse;
 	public int[] addi, info; // Only first element matters, meant
 	public String[] adds; //    to function like a pointer.
 	public double dx, dy, dwidth, dheight;
@@ -24,7 +25,7 @@ public abstract class Interface {
 	
 	public Interface(Texture tex, int x, int y, int width, int height){
 		background = tex;
-		type = 0;
+		type = 0; 					// THIS TYPE IS BASICALLY DEPRECATED AT THIS POINT- NOTHING WORKS WITH IT
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -89,13 +90,17 @@ public abstract class Interface {
 			launchScreen.parent = parent;
 			launchScreen.run();
 		}
-	};
+	}
+	
+	public void response(int eventKey, int x, int y){}
 	
 	public void setParent(Screen screen){parent = screen;}
 	
 	public String getValue(){if(adds != null) return adds[0]; return null;}
 	public void setValue(String value){if(adds != null)adds[0] = value;}
 	
+	public void setX(double x){dx = x;}
+	public void setY(double y){dy = y;}
 	public int getX(){if(type == 0){return x;}else{return (int) (dx*Graphics.WIDTH);}}
 	public int getY(){if(type == 0){return y;}else{return (int) (dy*Graphics.HEIGHT);}}
 	public int getWidth(){if(type == 0){return width;}else{return (int) (dwidth*Graphics.WIDTH);}}

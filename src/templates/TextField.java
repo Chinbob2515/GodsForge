@@ -28,6 +28,28 @@ public class TextField extends Interface{
 			dy = 1.0-height/2;
 	}
 	
+	public TextField(String words, double x, double y, double width, double height){
+		this(null, words, x, y, width, height);
+	}
+	
+	public TextField(String words, double x, double y, double width, double height, boolean hover){
+		this(null, words, x, y, width, height, hover);
+	}
+	
+	public TextField(Texture tex, String words, double x, double y, double width, double height, boolean hover){
+		this(tex, words, x, y, width, height);
+		this.hover = hover;
+	}
+	
+	public TextField(String words, double x, double y){ // Basically everything else if pointless.
+		this(null, words, x, y, 0, 0);
+	}
+	
+	public TextField(String words, double x, double y, boolean hover){
+		this(words, x, y);
+		this.hover = hover;
+	}
+	
 	public void render(){
 		if(background != null){
 			Draw.renderthistex(getRectangle(), background);
@@ -46,8 +68,19 @@ public class TextField extends Interface{
 				Graphics.fonts[0].drawString(getX(), getY(), draw);
 			}
 		}else{
-			Graphics.fonts[0].drawString(getX()-Graphics.fontWidth(0, draw)/2, getY()-Graphics.fontHeight(0, draw)/2, draw);
+			Graphics.fonts[0].drawString(getX(), getY(), draw);//Graphics.fonts[0].drawString(getX()-Graphics.fontWidth(0, draw)/2, getY()-Graphics.fontHeight(0, draw)/2, draw);
 		}
+	}
+	
+	public void setValue(String s){
+		dx += dwidth/2;
+		text = s;
+		dwidth = (float)(Graphics.fontWidth(0, s))/Graphics.WIDTH;
+		dx -= dwidth / 2;
+	}
+	
+	public String getValue(){
+		return text;
 	}
 
 }

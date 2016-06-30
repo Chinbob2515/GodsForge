@@ -11,7 +11,8 @@ import server.Server;
 
 public class Connection {
 	
-	public static int portNumber = 26656;
+	public static final int portNumber = 26656;
+	public static int id;
 	public static String hostName;
 	
 	private static PrintWriter out;
@@ -31,12 +32,14 @@ public class Connection {
 			System.err.println("Couldn't get I/O for the connection to " + hostName);
 			return 0;
 		} 
+		id = Integer.parseInt(receive());
 		return 1;
 	}
 	
 	public static String receive(){
 		try {
-			return in.readLine();
+			String inN = in.readLine();
+			if(inN != null) return inN; else return "";
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -44,6 +47,13 @@ public class Connection {
 	}
 	
 	public static void write(String string){
+		// String has to padded to have at least one : and one ; to not crash server code parsing.
+		if(string.split(":").length == 1){
+			string += ":";
+		}
+		if(string.split(";").length == 1){
+			string += ";";
+		}
 		out.println(string);
 	}
 	

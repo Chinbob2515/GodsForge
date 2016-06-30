@@ -22,6 +22,8 @@ import org.newdawn.slick.opengl.Texture;
 
 public abstract class Screen {
 	
+	protected boolean LOG;
+	
 	private Texture background;
 	protected Texture[] textures;
 	protected ArrayList<Integer[]> statics;
@@ -29,7 +31,7 @@ public abstract class Screen {
 	
 	private boolean setted;
 	private Interface focused;
-	protected boolean run;
+	public boolean run;
 	public Screen parent;
 	public int translate_x = 0, translate_y = 0, mousex = 0, mousey = 0;
 	
@@ -37,8 +39,8 @@ public abstract class Screen {
 	
 	public Screen(Texture background){
 		this.background = background;
-		statics = new ArrayList<Integer[]>();
-		dynamics = new ArrayList<Integer[]>();
+		statics = new ArrayList<Integer[]>(); // Completely forgot the point of this- maybe originally meant to simple interfaces?
+		dynamics = new ArrayList<Integer[]>(); 
 		Settings.screens.add(this);
 		interfaces = new Interface[0]; // To prevent null pointer exceptions
 	}
@@ -92,6 +94,7 @@ public abstract class Screen {
 		while(run){
 			check();
 			render();
+			logic();
 		}
 		onEnd();
 	}
@@ -113,7 +116,10 @@ public abstract class Screen {
 				focused = null;
 				for(Interface inter: clicksOn){
 					if(inter.zindex == max){
-						inter.response(eventKey);
+						if(inter.detailedResponse)
+							inter.response(eventKey, mousex, mousey);
+						else
+							inter.response(eventKey);
 						inter.focus = true;
 						id = inter.id;
 						focused = inter;
@@ -144,15 +150,9 @@ public abstract class Screen {
 		}
 	}
 	
-	public void render2(){
-		
-	}
-	
 	public void onEscapeButton(){
 		run = false;
 	}
-	
-	public void onEnd(){};
 	
 	public void setParent(){
 		for(Interface inter: interfaces){
@@ -170,5 +170,9 @@ public abstract class Screen {
 		background.release();
 		Settings.screens.remove(this);
 	}
+
+	public void onEnd(){}
+	public void render2(){} // Probably never going to be used, but it's a small overhead.
+	public void logic(){}
 
 }

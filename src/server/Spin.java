@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 public class Spin extends Thread{
 
     public static float interval, baseWarmup;
-    public static int minPlayers;
+    public static int minPlayers, idCounter = 0;
     public static boolean modded = false;
 
 	public Gods[] players = new Gods[Gods.nInGame];
@@ -17,31 +17,44 @@ public class Spin extends Thread{
 	public int[] playersc = new int[Gods.nInGame];
 	public Game game;
 
-	public Spin(Gods gods){
-		addPlayer(gods);
+	public Spin(){
+		//addPlayer(gods);
 		for(int i = 0; i != players.length; i++){
 			countries[i] = -1;
 			playersc [i] = -1;
 		}
 	}
+	
+	public int connect(Gods god){ // To plug your "Gods" object into this instance, for the right user (0-Failed;1-Done).
+		for(int i = 0; i != players.length; i++){
+			if(players[i].user.equals(god.user)){
+				god.GameId = players[i].GameId;
+				players[i] = god;
+				return 1;
+			}
+		}
+		return 0;
+	}
 
 	public void addPlayer(Gods gods){
+		if(connect(gods) == 1){return;} // If you can plug it in place of user's other instance, do.
 		players[nPlayers++] = gods;
+		gods.GameId = idCounter++;
 		sendPlayer(nPlayers - 1, 0, null, null);
 	}
 
 	public void removePlayer(){
-	    System.out.println("Using default remove for "+nPlayers);
+	    Server.log("Using default remove for "+nPlayers);
 		players[nPlayers--] = null;
-		System.out.println("Player removed, there are now "+nPlayers+" players.");
+		Server.log("Player removed, there are now "+nPlayers+" players.");
 	}
 
 	public void removePlayer(int num){
 		if(num == nPlayers - 1){removePlayer();return;}
-		System.out.println("removing : "+num+" out of "+nPlayers);
+		Server.log("removing : "+num+" out of "+nPlayers);
 		for(int i = num; i != nPlayers; i++){
-            System.out.println("i : "+i+" + num : "+num+" + nPlayers : "+nPlayers);
-			players[i] = i==5?null:players[i+1];
+            Server.log("i : "+i+" + num : "+num+" + nPlayers : "+nPlayers);
+			players[i] = i==(Gods.nInGame-1)?null:players[i+1];
 			if(players[i] != null){
                 players[i].playern--;
 			}
@@ -54,7 +67,7 @@ public class Spin extends Thread{
 		if(playersc[player] != -1){countries[num] = -1;}
 		countries[num] = player;
 		playersc[player] = num;
-		System.out.println("Set country for player "+player+" to "+num);
+		Server.log("Set country for player "+player+" to "+num);
 	}
 
 	public void sendPlayer(int player, int code, int[] ints, String[] strings){
@@ -74,7 +87,7 @@ public class Spin extends Thread{
 	}
 
 	public void sendAll(int code, int[] ints, String[] strings){
-		//System.out.println("Sending with code "+code);
+		//Server.log("Sending with code "+code);
 		String string = "";
 		switch(code){
 		case 2:
@@ -121,11 +134,11 @@ public class Spin extends Thread{
 	}
 
 	public void run(){
-		System.out.println("Spin started");
+		Server.log("Spin started");
 		try{
             sendAll(4, null, new String[]{IOHandle.slurp(new FileInputStream(IOHandle.COUNTRY_SETTINGS)).replaceAll("[\\t\\n\\x0B\\f\\r]","")});
 		} catch(FileNotFoundException e){
-            System.out.println("oh no");
+            Server.log("oh no");
 		}
 		sendAll(5, new int[]{minPlayers}, null);
 		while(true){

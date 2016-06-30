@@ -10,7 +10,7 @@ import templates.TypeField;
 // TODO FOR SOME REASON, this screen exits main as well as itself on end.
 
 public class UserInput extends Screen{
-
+	
 	public UserInput() {
 		super(Graphics.loadTex("black"));
 		interfaces = new Interface[]{
@@ -20,9 +20,17 @@ public class UserInput extends Screen{
 				new TextField(null, "Login", 0.3, 0.8, 0, 0){
 					public void response(int eventKey){
 						Connection.write("1 "+interfaces[1].getValue()+" "+interfaces[2].getValue());
-						//parent.onEnd();
-						launchScreen.parent = parent;
-						launchScreen.run();
+						String s = Connection.receive();
+						if(s.equals("NO")){
+							interfaces[0].setValue("Enter VALID details:");
+						} else if(s.equals("YES")){
+							//parent.onEnd();
+							launchScreen.parent = parent;
+							launchScreen.run();
+							run = false;
+						} else {
+							interfaces[0].setValue("Something went very wrong.");
+						}
 					}
 				},
 				new TextField(null, "Register", 0.7, 0.8, 0, 0){
@@ -31,6 +39,7 @@ public class UserInput extends Screen{
 						//parent.onEnd();
 						launchScreen.parent = parent;
 						launchScreen.run();
+						run = false;
 					}
 				},
 				new TextField(null, "Back", 0.0, 1, 0, 0)

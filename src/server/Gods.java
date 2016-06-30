@@ -15,6 +15,10 @@ public class Gods extends Thread implements GameI{
 	private PrintWriter out;
 	public boolean runB = true, hi = false, observe = true;
 	public ArrayList<String> send = new ArrayList<String>();
+	
+	public String user;
+	
+	public int GameId;
 
 	public Gods(PrintWriter out, int id){
 		this.out = out;
@@ -24,27 +28,27 @@ public class Gods extends Thread implements GameI{
 	}
 
 	public void run(){
-		System.out.println("Gods started");
+		Server.log("Gods started");
 		while(observe){
 			
 		}
-		// CURRENT LIMIT OF ADAPTION TO GODSFORGE
+		// CURRENT LIMIT OF ADAPTION TO GODSFORGE IN THIS METHOD
 		
-		if(spins.size() * nInGame < clients){
-			System.out.println("new Spin started " + spins.size() +" "+ nInGame + " " + clients);
+		/*if(spins.size() * nInGame < clients){
+			Server.log("new Spin started " + spins.size() +" "+ nInGame + " " + clients);
 			spins.add(new Spin(this));
 			spins.get(spins.size()-1).start();
 		} else {
 			spins.get(spins.size()-1).addPlayer(this);
 		}
-		spin = spins.get(spins.size()-1);
-		System.out.println("RUN STARTED ");
+		spin = spins.get(spins.size()-1);*/
+		Server.log("RUN STARTED ");
 		while(runB){
-			//System.out.println("STILL RUNNNNIG " + hi);
+			//Server.log("STILL RUNNNNIG " + hi);
 			/*if(!send.isEmpty()){
 				String string = send.remove(0);
 				out.println(string);
-				//System.out.println("SENT STRING "+string);
+				//Server.log("SENT STRING "+string);
 			}*/
 			try{
 				Thread.sleep(4000);
@@ -56,9 +60,9 @@ public class Gods extends Thread implements GameI{
 			spins.remove(spins.indexOf(spin));
 			spin.end();
 			spin = null;
-			System.out.println("RUN ENDED, Removing Spin");
+			Server.log("RUN ENDED, Removing Spin");
 		} else {
-            System.out.println("RUN ENDED : " + spin.nPlayers);
+            Server.log("RUN ENDED : " + spin.nPlayers);
         }
 	}
 
@@ -71,7 +75,7 @@ public class Gods extends Thread implements GameI{
 	public void sendReject(int country){
         String string;
         string = "3:"+country;
-        System.out.println(id + "rejecting country choice!");
+        Server.log(id + "rejecting country choice!");
         out.println(string);
         spin.sendAll(2, null, null);
 	}
@@ -82,6 +86,13 @@ public class Gods extends Thread implements GameI{
 
 	@SuppressWarnings("unused")
 	public void receive(String string){
+		/* Codes: 
+		 *  0x - Pregame organisation
+		 *  1x - In game instructions
+		 *  2x - Meta information request
+		 *  3x - Meta action request
+		 *  4x - Error code
+		 * */
 	    int subpro, x, y, id, country, country2, reserve;
 		send.add(string);
 		//hi = true; Probably an old indicator? IDK?
@@ -92,7 +103,7 @@ public class Gods extends Thread implements GameI{
 		case 0: // Request update for game information.
 			String str = "0:";
 			for(Spin spin: spins){
-				str += spin.players.length+"."+spin.rounds+";";
+				str += spin.players.length+"-"+spin.rounds+";";
 			}
 			out.println(str);
 			break;
@@ -100,8 +111,11 @@ public class Gods extends Thread implements GameI{
 			spin = spins.get(Integer.parseInt(strings[0]));
 			observe = false;
 			break;
-		/*case 0:
-			System.out.println(playern +" choosing country");
+		case 2: // Create a game
+			spins.add(new Spin());
+			break;
+		/*case 0: 		// Let's just gut the whole list of cases, and hope.
+			Server.log(playern +" choosing country");
 			spin.chooseCountry(playern, Integer.parseInt(strings[0]));
 			break;
 		case 1:
@@ -154,7 +168,7 @@ public class Gods extends Thread implements GameI{
                     break;
                 }
             } else {
-                System.out.println("Nothing has been programmed to happen here");
+                Server.log("Nothing has been programmed to happen here");
             }
             break;
         case 14:
@@ -162,9 +176,9 @@ public class Gods extends Thread implements GameI{
             country = Integer.parseInt(strings[1]);
             country2 = Integer.parseInt(strings[2]);
             spin.game.setWar(country, country2, subpro==1);
-            break;*/ // Let's just gut the whole list of cases, and hope.
+            break;*/ 
 		}
-		System.out.println("received string "+string);
+		Server.log("received string "+string);
 	}
 
 	public void end(){
@@ -177,7 +191,7 @@ public class Gods extends Thread implements GameI{
 	    Spin.interval = Integer.parseInt(Server.msettings.get("warmup_interval"));
 	    Spin.baseWarmup = Integer.parseInt(Server.msettings.get("warmup_start"));
 	    Spin.minPlayers = Integer.parseInt(Server.msettings.get("min_players"));
-		System.out.println("Gods game started");
+		Server.log("Gods game started");
 	}
 
 }

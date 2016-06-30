@@ -16,6 +16,8 @@ public class Main extends Screen{
 				new TextField(null, "Play online", 0.5, 0.2, 0.1, 0.1),
 				new TextField(null, "Play offline", 0.5, 0.4, 0.1, 0.1){
 					public void response(int eventKey){
+						if(Server.inProccess)
+							return;
 						Settings.online = false;
 						Server.main(new String[]{"false"});
 						Connection.connect("localhost");

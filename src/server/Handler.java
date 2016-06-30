@@ -3,8 +3,8 @@ package server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -73,8 +73,10 @@ public class Handler extends Thread{
 				// Will screw up the game if it can't parse this input.
 				//write(number + (nicks.get(number).equals("")?"":" (" + nicks.get(number) + ")") + ": " + " thread has had a disconnection");
 				out.close();
-				gameO.end();
-				gameO = null;
+				if(gameO != null){
+					gameO.end();
+					gameO = null;
+				}
 				break;
 			}else if(game != -1){
 				if(inputLine.equals("STOP")){
@@ -96,7 +98,7 @@ public class Handler extends Thread{
 				File.writeFile(os, "shrek.png");
 				out.println("\n");
 				out.println("\f");
-				System.out.println("hi, " + inputLine);
+				Server.log("hi, " + inputLine);
 			} else if(inputLine.equals("help")){
 				out.println("The commands are: \n 'help' \n 'nick' \n 'exit'");
 			} else if(inputLine.startsWith("nick")){
@@ -108,7 +110,7 @@ public class Handler extends Thread{
 			} else if(inputLine.startsWith("game")){
 				if(inputLine.length() < 6){out.println("Wrong usuage, try again");continue;}
 				game = Integer.parseInt(inputLine.substring(5));
-				//System.out.println("User "+ number + " is switching to game "+game);
+				//Server.log("User "+ number + " is switching to game "+game);
 				switch(game){
 				case 0:
 					gameO = new Echo(out);
@@ -119,15 +121,18 @@ public class Handler extends Thread{
 					if(userKeyPair[0].equals("0")){ // Register a new user
 						auth.addAuth(userKeyPair[1], userKeyPair[2]);
 					} else if(userKeyPair[0].equals("1")){ // Login as existing user.
-						if(auth.checkAuth(userKeyPair[1], userKeyPair[2])){
-							out.println("NO"); // Super secret signal they failed authentication
+						if(!auth.checkAuth(userKeyPair[1], userKeyPair[2])){
+							Server.log("NO"); // Super secret signal they failed authentication
+							game = -1;
 							continue;
 						}
 					} else { 
 						// No other valid codes
-						out.println("WHAT");
+						Server.log("WHAT");
+						game = -1;
 						continue;
 					}
+					Server.log("YES"); // Client has to flush something from the connection- send yes as placeholder, for not NO
 					gameO = new Gods(out, number);
 					gameO.start();
 					break;
@@ -135,7 +140,7 @@ public class Handler extends Thread{
 			} else {
 				write(number + (nicks.get(number).equals("")?"":" (" + nicks.get(number) + ")") + ": " + inputLine);
 			}
-			System.out.println("User input : "+inputLine);
+			Server.log("User input : "+inputLine);
 
 		}
 	} catch (IOException e) {

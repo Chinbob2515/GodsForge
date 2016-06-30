@@ -31,7 +31,7 @@ public class Browse extends Screen{
 		interfaces[0].quit = true;
 		interfaces[1].launchScreen = new CreateGame();
 		LOG = true;
-		doThing();
+		//doThing();
 	}
 	
 	public void logic(){
@@ -71,8 +71,10 @@ public class Browse extends Screen{
 					new TextField("Rounds: "+bits[1], 1.0, 0)
 			});
 		}
+		String scroll = interfaces[2].getValue();
 		System.out.println(numOfInters+" many");
 		interfaces[2] = new ScrollField(null, 0.1, 0.1, 0.8, 0.9, inters);
+		interfaces[2].setValue(scroll);
 		interfaces[2].setParent(this);
 	}
 	

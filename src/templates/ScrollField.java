@@ -99,5 +99,13 @@ public class ScrollField extends Interface{
 		}
 		dy = y;
 	}
+	
+	public String getValue(){
+		return ""+yOffset;
+	}
+	
+	public void setValue(String string){
+		yOffset = Double.parseDouble(string);
+	}
 
 }

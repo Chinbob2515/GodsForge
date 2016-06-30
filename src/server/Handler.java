@@ -119,20 +119,23 @@ public class Handler extends Thread{
 				case 1:
 					String[] userKeyPair = in.readLine().split(" ");
 					if(userKeyPair[0].equals("0")){ // Register a new user
-						auth.addAuth(userKeyPair[1], userKeyPair[2]);
+						if(auth.addAuth(userKeyPair[1], userKeyPair[2]))
+							out.println("YES");
+						 else 
+							 out.println("NO");
 					} else if(userKeyPair[0].equals("1")){ // Login as existing user.
 						if(!auth.checkAuth(userKeyPair[1], userKeyPair[2])){
-							Server.log("NO"); // Super secret signal they failed authentication
+							out.println("NO"); // Super secret signal they failed authentication
 							game = -1;
 							continue;
 						}
 					} else { 
 						// No other valid codes
-						Server.log("WHAT");
+						out.println("WHAT");
 						game = -1;
 						continue;
 					}
-					Server.log("YES"); // Client has to flush something from the connection- send yes as placeholder, for not NO
+					out.println("YES"); // Client has to flush something from the connection- send YES as placeholder, for not NO
 					gameO = new Gods(out, number);
 					gameO.start();
 					break;

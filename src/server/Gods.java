@@ -29,9 +29,7 @@ public class Gods extends Thread implements GameI{
 
 	public void run(){
 		Server.log("Gods started");
-		while(observe){
-			
-		}
+		while(observe){ /* Halt while the user manually requests/utilises game info. */ }
 		// CURRENT LIMIT OF ADAPTION TO GODSFORGE IN THIS METHOD
 		
 		/*if(spins.size() * nInGame < clients){
@@ -92,6 +90,8 @@ public class Gods extends Thread implements GameI{
 		 *  2x - Meta information request
 		 *  3x - Meta action request
 		 *  4x - Error code
+		 *  
+		 *  Use : as once main seperator, ; as a smaller unit seperator, and - or , as smaller ones.
 		 * */
 	    int subpro, x, y, id, country, country2, reserve;
 		send.add(string);
@@ -103,12 +103,13 @@ public class Gods extends Thread implements GameI{
 		case 0: // Request update for game information.
 			String str = "0:";
 			for(Spin spin: spins){
-				str += spin.nPlayers+"-"+spin.rounds+"-"+spin.players.length+";";
+				str += spin.nPlayers+"-"+spin.rounds+"-"+spin.players.length+";"; 
 			}
 			out.println(str);
 			break;
 		case 1: // Enter a game.
 			spin = spins.get(Integer.parseInt(strings[0]));
+			spin.addPlayer(this);
 			observe = false;
 			break;
 		case 2: // Create a game

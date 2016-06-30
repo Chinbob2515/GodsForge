@@ -33,9 +33,13 @@ public class Auth {
 		return pass;
 	}
 	
-	public void addAuth(String user, String pass){
+	public boolean addAuth(String user, String pass){
 		String[] newUsers = new String[count+1];
 		String[] newPasses = new String[count+1];
+		for(String string: userNames){
+			if(string.equals(user))
+				return false;
+		}
 		for(int i = 0; i != count; i++) {
 			newUsers[i] = userNames[i];
 			newPasses[i] = passKeys[i];
@@ -45,6 +49,7 @@ public class Auth {
 		count++;
 		userNames = newUsers;
 		passKeys = newPasses;
+		return true;
 	}
 	
 	public void removeAuth(int number) throws Exception{

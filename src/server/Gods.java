@@ -103,7 +103,7 @@ public class Gods extends Thread implements GameI{
 		case 0: // Request update for game information.
 			String str = "0:";
 			for(Spin spin: spins){
-				str += spin.players.length+"-"+spin.rounds+";";
+				str += spin.nPlayers+"-"+spin.rounds+"-"+spin.players.length+";";
 			}
 			out.println(str);
 			break;

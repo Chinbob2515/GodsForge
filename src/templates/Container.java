@@ -19,8 +19,8 @@ public class Container extends Interface{
 			inter.setX(inter.dx + x); 
 			if(inter.dx < minx) minx = inter.dx;
 			if(inter.dy < miny) miny = inter.dy;
-			if(inter.dx > maxx) maxx = inter.dx;
-			if(inter.dy > maxy) maxy = inter.dy;
+			if(inter.dx + inter.dwidth > maxx) maxx = inter.dx + inter.dwidth;
+			if(inter.dy + inter.dheight > maxy) maxy = inter.dy + inter.dheight;
 			inters.add(inter);
 		}
 		this.dheight = maxy - miny;

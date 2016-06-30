@@ -30,7 +30,7 @@ public abstract class Screen {
 	protected ArrayList<Integer[]> dynamics;
 	
 	private boolean setted;
-	private Interface focused;
+	protected Interface focused;
 	public boolean run;
 	public Screen parent;
 	public int translate_x = 0, translate_y = 0, mousex = 0, mousey = 0;

@@ -9,6 +9,7 @@ import org.newdawn.slick.opengl.Texture;
 public class ScrollField extends Interface{
 	
 	public final double SENSITIVITY = 0.1; // Since just using raw scroll data is way too responsive.
+	public final double DEFAULTGAP = 0.01; // Default gap between members.
 	
 	private ArrayList<Interface> inters = new ArrayList<Interface>();
 	public Interface focused;
@@ -21,8 +22,8 @@ public class ScrollField extends Interface{
 		super(tex, x, y, width, height);
 		double yOff = 0;
 		for(Interface inter: contains){ //Only works with relative co-ords? FIX FIX FIX
-			inter.setY(inter.dy + yOff + y);; // dy should be set relative to the container, i.e. this (but when wouldn't it be 0?)
-			yOff += inter.dheight;
+			inter.setY(inter.dy  + yOff + y);; // dy should be set relative to the container, i.e. this (but when wouldn't it be 0?)
+			yOff += inter.dheight + DEFAULTGAP;
 			inter.dwidth = width;
 			inters.add(inter);
 		}

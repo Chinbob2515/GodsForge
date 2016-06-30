@@ -56,6 +56,7 @@ public abstract class Interface {
 	}
 	
 	public void render(){
+		renderBackground();
 		if(background != null){
 			Draw.renderthistex(getRectangle(), background);
 		}
@@ -98,6 +99,8 @@ public abstract class Interface {
 	
 	public String getValue(){if(adds != null) return adds[0]; return null;}
 	public void setValue(String value){if(adds != null)adds[0] = value;}
+	
+	public void renderBackground(){}
 	
 	public void setX(double x){dx = x;}
 	public void setY(double y){dy = y;}

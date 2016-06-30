@@ -1,6 +1,9 @@
 package main;
 
+import org.newdawn.slick.opengl.Texture;
+
 import helpers.Connection;
+import helpers.Draw;
 import helpers.Graphics;
 import templates.Container;
 import templates.Interface;
@@ -20,13 +23,14 @@ public class Browse extends Screen{
 				new TextField(null, "Back", 0.0, 0, 0, 0),
 				new TextField(null, "New Game", 1.0, 0, 0, 0),
 				new ScrollField(null, 0, 0.1, 1, 1, new Interface[]{
-						new TextField(null, "No servers right now", 0.5,0,0,0)
+						new TextField(null, "No servers right now", 0.5,0,0,0,false)
 				}),
-				new TextField(null, "Reload Games", 1.0, 1, 0, 0){
+				new TextField(null, "Reload Games", 0.0, 1, 0, 0){
 					public void response(int eventKey){
 						doThing();
 					}
-				}
+				},
+				new TextField(null, "Connect", 1.0, 1, 0, 0)
 		};
 		interfaces[0].quit = true;
 		interfaces[1].launchScreen = new CreateGame();
@@ -67,14 +71,27 @@ public class Browse extends Screen{
 			String[] bits = sections[i].split("-");
 			if(bits.length < 2) break; // End of list
 			inters[i] = new Container(null, 0.0, 0, 0, 0, new Interface[]{
-					new TextField("Players: "+bits[0], 0.0, 0),
-					new TextField("Rounds: "+bits[1], 1.0, 0)
-			});
+					new TextField("Players: "+bits[0], 0.0, 0, false),
+					new TextField("Rounds: "+bits[1], 1.0, 0, false),
+					new TextField("Max players: "+bits[2], 0, 0.12, false)
+			}){
+				public Texture grey2 = Graphics.loadTex("grey2"), grey = Graphics.loadTex("grey");
+				public void renderBackground(){
+					if(focus){
+						Draw.renderthistex(getRectangle(), grey2);
+					} else {
+						Draw.renderthistex(getRectangle(), grey);
+					}
+				}
+			};
 		}
 		String scroll = interfaces[2].getValue();
-		System.out.println(numOfInters+" many");
-		interfaces[2] = new ScrollField(null, 0.1, 0.1, 0.8, 0.9, inters);
+		boolean focus = interfaces[2].focus;
+		interfaces[2] = new ScrollField(null, 0, 0.1, 1, 0.9, inters); // Oh god so much overhead to switching elements in and out.
 		interfaces[2].setValue(scroll);
+		interfaces[2].focus = focus;
+		if(focus)
+			focused = interfaces[2];
 		interfaces[2].setParent(this);
 	}
 	

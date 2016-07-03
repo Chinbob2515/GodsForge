@@ -7,13 +7,15 @@ public class Gods extends Thread implements GameI{
 
 	public static final int nInGame = 6;
 	public static int updateInterval;
+	public static Auth auth = new Auth();
 
-	public static int games = 0, clients = 0, id;
-	public int playern;
+	public static int games = 0, /*clients = 0,*/ id;
+	//public int playern;
 	public static ArrayList<Spin> spins = new ArrayList<Spin>();
 	private Spin spin;
 	private PrintWriter out;
 	public boolean runB = true, hi = false, observe = true;
+	public Integer lock = new Integer(1); // Used for thread locking
 	public ArrayList<String> send = new ArrayList<String>();
 	
 	public String user;
@@ -23,45 +25,33 @@ public class Gods extends Thread implements GameI{
 	public Gods(PrintWriter out, int id){
 		this.out = out;
 		Gods.id = id; // Just what? Static ID tracker?
-		this.playern = clients % nInGame;
-		clients++;
+		//this.playern = clients % nInGame;
+		//clients++;
 	}
 
 	public void run(){
 		Server.log("Gods started");
-		while(observe){ /* Halt while the user manually requests/utilises game info. */ }
+		synchronized(lock){ // Wait until a game is actually chosen.
+			while(observe){
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		// CURRENT LIMIT OF ADAPTION TO GODSFORGE IN THIS METHOD
 		
-		/*if(spins.size() * nInGame < clients){
-			Server.log("new Spin started " + spins.size() +" "+ nInGame + " " + clients);
-			spins.add(new Spin(this));
-			spins.get(spins.size()-1).start();
-		} else {
-			spins.get(spins.size()-1).addPlayer(this);
-		}
-		spin = spins.get(spins.size()-1);*/
 		Server.log("RUN STARTED ");
 		while(runB){
-			//Server.log("STILL RUNNNNIG " + hi);
-			/*if(!send.isEmpty()){
-				String string = send.remove(0);
-				out.println(string);
-				//Server.log("SENT STRING "+string);
-			}*/
 			try{
-				Thread.sleep(4000);
+				Thread.sleep(4000); // IDK why we need this class to be a thread at all- mostly just a symbolic state tracker. 
 			}catch(InterruptedException e){}
-		}
-		spin.removePlayer(playern);
-		clients--;
-		if(spin.nPlayers == 0){
-			spins.remove(spins.indexOf(spin));
-			spin.end();
-			spin = null;
-			Server.log("RUN ENDED, Removing Spin");
-		} else {
-            Server.log("RUN ENDED : " + spin.nPlayers);
-        }
+		} // All wrapping up logic can be done below this, but IDK why it would be.
+		
+		// TODO Remove player from game?!?!
+		
+		// TODO Make a game deleting process. (probably each player has a "delete" flag to mutually raise, or can be replaced by AIs- and an all AI game disappears)
 	}
 
 	public void updateWarmup(double time, int players, String countries){
@@ -84,6 +74,10 @@ public class Gods extends Thread implements GameI{
 
 	@SuppressWarnings("unused")
 	public void receive(String string){
+		if(user == null){
+			doAuthSend(string);
+			return;
+		}
 		/* Codes: 
 		 *  0x - Pregame organisation
 		 *  1x - In game instructions
@@ -103,17 +97,23 @@ public class Gods extends Thread implements GameI{
 		case 0: // Request update for game information.
 			String str = "0:";
 			for(Spin spin: spins){
-				str += spin.nPlayers+"-"+spin.rounds+"-"+spin.players.length+";"; 
+				str += spin.nPlayers+"-"+spin.rounds+"-"+spin.players.length+"-"+spin.name+";"; 
 			}
 			out.println(str);
 			break;
 		case 1: // Enter a game.
+			Server.log("Entering game "+strings[0]);
 			spin = spins.get(Integer.parseInt(strings[0]));
 			spin.addPlayer(this);
 			observe = false;
+			synchronized(lock){
+				lock.notifyAll();
+			}
 			break;
 		case 2: // Create a game
-			spins.add(new Spin());
+			if(strings[0].equals(""))strings[0] = "Game Name";
+			spins.add(new Spin(strings[0]));
+			out.println("1:"); // Data flushhh! ( oh wait we have no info )
 			break;
 		/*case 0: 		// Let's just gut the whole list of cases, and hope.
 			Server.log(playern +" choosing country");
@@ -180,6 +180,28 @@ public class Gods extends Thread implements GameI{
             break;*/ 
 		}
 		Server.log("received string "+string);
+	}
+	
+	public void doAuthSend(String string){
+		String[] userKeyPair = string.split(" ");
+		if(userKeyPair[0].equals("0")){ // Register a new user
+			if(!auth.addAuth(userKeyPair[1], userKeyPair[2])){
+				 out.println("NO");
+				 return;
+			}
+		} else if(userKeyPair[0].equals("1")){ // Login as existing user.
+			if(!auth.checkAuth(userKeyPair[1], userKeyPair[2])){
+				out.println("NO"); // Super secret signal they failed authentication
+				return;
+			}
+		} else { 
+			// No other valid codes
+			out.println("WHAT");
+			return;
+		}
+		out.println("YES"); // Client has to flush something from the connection- send YES as placeholder, for not NO
+		user = userKeyPair[0];
+		return;
 	}
 
 	public void end(){

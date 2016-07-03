@@ -13,20 +13,20 @@ public class Spin extends Thread{
 	public int nPlayers = 0, rounds = 0;
 	public float warmup = baseWarmup; //Seconds
 	public boolean runb = true, gameStarted = false;
-	public int[] countries = new int[Gods.nInGame];
 	public int[] playersc = new int[Gods.nInGame];
+	public String name;
 	public Game game;
 
-	public Spin(){
-		//addPlayer(gods);
+	public Spin(String word){
+		name = word;
 		for(int i = 0; i != players.length; i++){
-			countries[i] = -1;
-			playersc [i] = -1;
+			playersc[i] = -1;
 		}
 	}
 	
 	public int connect(Gods god){ // To plug your "Gods" object into this instance, for the right user (0-Failed;1-Done).
 		for(int i = 0; i != players.length; i++){
+			if(players[i] == null)continue;
 			if(players[i].user.equals(god.user)){
 				god.GameId = players[i].GameId;
 				players[i] = god;
@@ -55,19 +55,8 @@ public class Spin extends Thread{
 		for(int i = num; i != nPlayers; i++){
             Server.log("i : "+i+" + num : "+num+" + nPlayers : "+nPlayers);
 			players[i] = i==(Gods.nInGame-1)?null:players[i+1];
-			if(players[i] != null){
-                players[i].playern--;
-			}
 		}
 		nPlayers--;
-	}
-
-	public void chooseCountry(int player, int num){
-		if(countries[num] != -1 && countries[num] != player){players[player].sendReject(num);return;}
-		if(playersc[player] != -1){countries[num] = -1;}
-		countries[num] = player;
-		playersc[player] = num;
-		Server.log("Set country for player "+player+" to "+num);
 	}
 
 	public void sendPlayer(int player, int code, int[] ints, String[] strings){
@@ -87,7 +76,7 @@ public class Spin extends Thread{
 	}
 
 	public void sendAll(int code, int[] ints, String[] strings){
-		//Server.log("Sending with code "+code);
+		// Compile the string to be sent.
 		String string = "";
 		switch(code){
 		case 2:
@@ -113,6 +102,7 @@ public class Spin extends Thread{
             }
             break;
 		}
+		// Send the info.
 		for(int i = 0; i != nPlayers; i++){
 			switch(code){
 			case 2:
@@ -158,7 +148,7 @@ public class Spin extends Thread{
 			} catch(InterruptedException e){}
 		}
 		gameStarted = true;
-		game = new Game(countries, this);
+		game = new Game(this);
         game.run();
 	}
 

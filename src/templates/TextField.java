@@ -1,6 +1,5 @@
 package templates;
 
-import helpers.Draw;
 import helpers.Graphics;
 
 import org.newdawn.slick.Color;
@@ -51,9 +50,7 @@ public class TextField extends Interface{
 	}
 	
 	public void render(){
-		if(background != null){
-			Draw.renderthistex(getRectangle(), background);
-		}
+		super.render();
 		String draw = text;
 		if(addi != null){
 			draw = draw + addi[0];

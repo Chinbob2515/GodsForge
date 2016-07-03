@@ -27,7 +27,7 @@ public class UserInput extends Screen{
 							//parent.onEnd();
 							launchScreen.parent = parent;
 							launchScreen.run();
-							run = false;
+							//run = false;
 						} else {
 							interfaces[0].setValue("Something went very wrong.");
 						}
@@ -37,12 +37,13 @@ public class UserInput extends Screen{
 					public void response(int eventKey){
 						Connection.write("0 "+interfaces[1].getValue()+" "+interfaces[2].getValue());
 						String s = Connection.receive();
+						System.out.println("register response: "+s);
 						if(s.equals("NO")){
 							interfaces[0].setValue("Enter a different username:");
 						} else if(s.equals("YES")){
 							launchScreen.parent = parent;
 							launchScreen.run();
-							run = false;
+							//run = false;
 						} else {
 							interfaces[0].setValue("Something went very wrong.");
 						}

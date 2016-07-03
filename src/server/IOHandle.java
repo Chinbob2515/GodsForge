@@ -74,7 +74,7 @@ public class IOHandle{
     	return answers;
     }
 
-    public static Country[] getMCSettings(Game game){
+    /*public static Country[] getMCSettings(Game game){
     	String settings = null;
     	try {
 			settings = slurp(new FileInputStream(COUNTRY_SETTINGS));
@@ -144,9 +144,9 @@ public class IOHandle{
     			}
 /*    			if(pair2.equals(keys2[])){
 
-    			}*/
+    			}*
     		}
     	}
     	return countries;
-    }
+    }*/
 }

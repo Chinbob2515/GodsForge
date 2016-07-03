@@ -73,11 +73,15 @@ public class ScrollField extends Interface{
 	
 	public void render(){
 		super.render();
-		for(Interface inter: inters){
+		for(Interface inter: inters)
 			inter.setY(inter.dy + yOffset / Graphics.HEIGHT); // Preserve original position.
+		for(Interface inter: inters){
+			if(inter.dy < dy)continue; // Bounding < < 
+			if(inter.dy + inter.dheight > dy + dheight)continue;
 			inter.render();
-			inter.setY(inter.dy - yOffset / Graphics.HEIGHT); // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
 		}
+		for(Interface inter: inters)
+			inter.setY(inter.dy - yOffset / Graphics.HEIGHT); // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
 	}
 	
 	public void setParent(Screen screen){

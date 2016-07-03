@@ -11,14 +11,16 @@ import org.apache.commons.io.output.TeeOutputStream;
 
 public class Server extends Thread {
 
-	public static final boolean LOG = false, LOGTOFILE = false;
+	private static final boolean LOG = true, LOGTOFILE = false;
 	public static boolean run = true, doEnd, inProccess;
 	public static HashMap<String, String> msettings;
 	
 	public static ServerSocket serverSocket;
 
 	public static void main(String[] args){ // new String[]{(boolean autonomous)}
-
+		
+		// TODO make it so you can start custom local servers?. (not sure what you'd customise yet)
+		
 		if(LOGTOFILE){
 			try { // THIS STUFF JUST LOGS ALL THE OUTPUT FROM SYSOUT TO A FILE AS WELL- IT'S TOO ANOYING RIGHT NOW
             	FileOutputStream fos = new FileOutputStream(new java.io.File("logs/log"+System.currentTimeMillis()+".txt"));
@@ -33,9 +35,9 @@ public class Server extends Thread {
 		}
         
 		if(inProccess){
-			log("ALREADY RUNNING, YOU SCRUB");
-			return;
-		}
+			log("ALREADY RUNNING, YOU SCRUB"); // The server should create Handlers for each person, and then Handlers can spawn 
+			return; // 							  whatever they like. You should never need more than one Server instance, hence the 
+		}//										  heavily reliance (in this class) on static variables.
 		inProccess = true;
 		
 		Server server = new Server();

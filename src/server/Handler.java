@@ -15,7 +15,6 @@ public class Handler extends Thread{
 	public static ArrayList<PrintWriter> outs = new ArrayList<PrintWriter>();
 	public static ArrayList<String> nicks = new ArrayList<String>();
 	public static ArrayList<Boolean> dead = new ArrayList<Boolean>();
-	public static Auth auth = new Auth();
 
 	public int number;
 	public PrintWriter out;
@@ -117,25 +116,6 @@ public class Handler extends Thread{
 					gameO.start();
 					break;
 				case 1:
-					String[] userKeyPair = in.readLine().split(" ");
-					if(userKeyPair[0].equals("0")){ // Register a new user
-						if(auth.addAuth(userKeyPair[1], userKeyPair[2]))
-							out.println("YES");
-						 else 
-							 out.println("NO");
-					} else if(userKeyPair[0].equals("1")){ // Login as existing user.
-						if(!auth.checkAuth(userKeyPair[1], userKeyPair[2])){
-							out.println("NO"); // Super secret signal they failed authentication
-							game = -1;
-							continue;
-						}
-					} else { 
-						// No other valid codes
-						out.println("WHAT");
-						game = -1;
-						continue;
-					}
-					out.println("YES"); // Client has to flush something from the connection- send YES as placeholder, for not NO
 					gameO = new Gods(out, number);
 					gameO.start();
 					break;

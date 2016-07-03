@@ -2,6 +2,7 @@ package main;
 
 import org.newdawn.slick.opengl.Texture;
 
+import game.Game;
 import helpers.Connection;
 import helpers.Draw;
 import helpers.Graphics;
@@ -10,12 +11,13 @@ import templates.Interface;
 import templates.Screen;
 import templates.ScrollField;
 import templates.TextField;
+import templates.TypeField;
 
 public class Browse extends Screen{
 	
 	private long lastUpdate = System.currentTimeMillis();
 	
-	//private int servers = 0;
+	private int serverSelect = -1;
 	
 	public Browse() {
 		super(Graphics.loadTex("black"));
@@ -30,12 +32,19 @@ public class Browse extends Screen{
 						doThing();
 					}
 				},
-				new TextField(null, "Connect", 1.0, 1, 0, 0)
+				new TextField(null, "Connect", 1.0, 1, 0, 0){
+					public void response(int eventKey){
+						if(serverSelect < 0) return;
+						Connection.write("1:"+serverSelect);
+						super.response(eventKey);
+					}
+				}
 		};
 		interfaces[0].quit = true;
 		interfaces[1].launchScreen = new CreateGame();
+		interfaces[4].launchScreen = new Game();
 		LOG = true;
-		//doThing();
+		//doThing(); Crashes things for no reason?
 	}
 	
 	public void logic(){
@@ -71,9 +80,10 @@ public class Browse extends Screen{
 			String[] bits = sections[i].split("-");
 			if(bits.length < 2) break; // End of list
 			inters[i] = new Container(null, 0.0, 0, 0, 0, new Interface[]{
-					new TextField("Players: "+bits[0], 0.0, 0, false),
-					new TextField("Rounds: "+bits[1], 1.0, 0, false),
-					new TextField("Max players: "+bits[2], 0, 0.12, false)
+					new TextField("Name: "+bits[3], 0.0, 0, false),
+					new TextField("Players: "+bits[0], 0.0, 0.12, false),
+					new TextField("Rounds: "+bits[1], 1.0, 0.12, false),
+					new TextField("Max players: "+bits[2], 0, 0.24, false)
 			}){
 				public Texture grey2 = Graphics.loadTex("grey2"), grey = Graphics.loadTex("grey");
 				public void renderBackground(){
@@ -83,7 +93,12 @@ public class Browse extends Screen{
 						Draw.renderthistex(getRectangle(), grey);
 					}
 				}
+				public void response(int eventKey){
+					serverSelect = addi[0];
+					System.out.println("server select "+serverSelect);
+				}
 			};
+			inters[i].addi = new int[]{i};
 		}
 		String scroll = interfaces[2].getValue();
 		boolean focus = interfaces[2].focus;
@@ -103,10 +118,11 @@ public class Browse extends Screen{
 					new TextField("Back", 0.0, 0),
 					new TextField("Create Game", 0.5, 1){
 						public void response(int eventkey){
-							Connection.write("2");
+							Connection.write("2:"+parent.interfaces[3].getValue());
 							parent.run = false;
 						}
-					}
+					},
+					new TypeField(null, "Name", 0.5, 0.2, 0, 0)
 			};
 			interfaces[1].quit = true;
 		}

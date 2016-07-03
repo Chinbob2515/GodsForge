@@ -24,7 +24,6 @@ public class Connection {
 			Socket echoSocket = new Socket(hostName, portNumber);
 			out = new PrintWriter(echoSocket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-			out.println("game 1");
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + hostName);
 			return 0;
@@ -33,6 +32,7 @@ public class Connection {
 			return 0;
 		} 
 		id = Integer.parseInt(receive());
+		out.println("game 1");
 		return 1;
 	}
 	

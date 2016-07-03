@@ -67,7 +67,8 @@ public abstract class Screen {
 		// Retrieve the "true" coordinates of the mouse.
 		mousex = (int) (Mouse.getX() * ((float)(WIDTH) / Graphics.RWIDTH) - translate_x);
 		mousey = (int) (HEIGHT - Mouse.getY() * ((float)(HEIGHT) / Graphics.RHEIGHT) - 1 - translate_y);
-		Draw.renderthistex(new Rectangle(0,0,WIDTH, HEIGHT), background);
+		if(background != null)
+			Draw.renderthistex(new Rectangle(0,0,WIDTH, HEIGHT), background);
 		
 		if(interfaces != null){
 			for(Interface inter: interfaces){
@@ -167,7 +168,8 @@ public abstract class Screen {
 				tex.release();
 			}
 		}
-		background.release();
+		if(background != null)
+			background.release();
 		Settings.screens.remove(this);
 	}
 

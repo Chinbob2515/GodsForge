@@ -13,7 +13,7 @@ public class Connect extends Screen{
 	public static String ip;
 	
 	public Connect() {
-		super(Graphics.loadTex("black"));
+		super();
 		Settings.online = true;
 		interfaces = new Interface[]{
 				new TypeField(null, "Enter ip of server here", 0.5, 0.5, 0.1, 0.1),

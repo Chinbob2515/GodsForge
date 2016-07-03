@@ -22,6 +22,8 @@ import org.newdawn.slick.opengl.Texture;
 
 public abstract class Screen {
 	
+	private static final String resLocation = "Screens/";
+	
 	protected boolean LOG;
 	
 	private Texture background;
@@ -34,15 +36,22 @@ public abstract class Screen {
 	public boolean run;
 	public Screen parent;
 	public int translate_x = 0, translate_y = 0, mousex = 0, mousey = 0;
+	public final String NAME = this.getClass().getSimpleName();
 	
 	public Interface[] interfaces;
 	
 	public Screen(Texture background){
+		if(background == null)
+			background = Graphics.loadTex(resLocation+NAME);
 		this.background = background;
 		statics = new ArrayList<Integer[]>(); // Completely forgot the point of this- maybe originally meant to simple interfaces?
 		dynamics = new ArrayList<Integer[]>(); 
 		Settings.screens.add(this);
 		interfaces = new Interface[0]; // To prevent null pointer exceptions
+	}
+	
+	public Screen(){
+		this(null); // For some reason you can't access "this" while invoking a constructor, so can't reference class name.
 	}
 	
 	protected void render(){

@@ -11,8 +11,8 @@ import java.util.HashMap;
 
 public class IOHandle{
 
-    public static final String COUNTRY_SETTINGS = "Server/res/countries.settings";
-    public static final String MULTI_SETTINGS = "Server/res/multiplayer.settings";
+    public static final String COUNTRY_SETTINGS = "res/Server/countries.settings";
+    public static final String MULTI_SETTINGS = "res/Server/multiplayer.settings";
 
     public static String slurp(final InputStream is){
         final char[] buffer = new char[3019];

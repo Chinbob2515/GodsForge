@@ -9,7 +9,7 @@ import helpers.Settings;
 public class Setting extends Screen{
 
 	public Setting() {
-		super(Graphics.loadTex("black"));
+		super();
 		interfaces = new Interface[]{
 				new TextField(null, "Fullscreen: ", 0.5, 0.25, 0.1, 0.1){
 					public void response(int eventKey){

@@ -2,7 +2,7 @@ package server;
 
 public class Auth {
 	
-	public static final String authLocation = "Server/res/", userL = "users.txt", passL="pass.txt";
+	public static final String authLocation = "res/Server/", userL = "users.txt", passL="pass.txt";
 	
 	public String[] userNames;
 	public String[] passKeys;

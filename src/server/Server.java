@@ -11,7 +11,7 @@ import org.apache.commons.io.output.TeeOutputStream;
 
 public class Server extends Thread {
 
-	private static final boolean LOG = true, LOGTOFILE = false;
+	private static final boolean LOG = false, LOGTOFILE = false;
 	public static boolean run = true, doEnd, inProccess;
 	public static HashMap<String, String> msettings;
 	

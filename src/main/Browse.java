@@ -20,7 +20,7 @@ public class Browse extends Screen{
 	private int serverSelect = -1;
 	
 	public Browse() {
-		super(Graphics.loadTex("black"));
+		super();
 		interfaces = new Interface[]{
 				new TextField(null, "Back", 0.0, 0, 0, 0),
 				new TextField(null, "New Game", 1.0, 0, 0, 0),
@@ -112,7 +112,7 @@ public class Browse extends Screen{
 	
 	public class CreateGame extends Screen{
 		public CreateGame(){
-			super(Graphics.loadTex("black"));
+			super();
 			interfaces = new Interface[]{
 					new TextField("Set up game:", 0.5, 0, false), // TextField-s can be done in so many ways, but they're all distinct. 
 					new TextField("Back", 0.0, 0),

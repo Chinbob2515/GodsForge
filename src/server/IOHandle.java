@@ -2,17 +2,21 @@ package server;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 public class IOHandle{
 
-    public static final String COUNTRY_SETTINGS = "res/Server/countries.settings";
-    public static final String MULTI_SETTINGS = "res/Server/multiplayer.settings";
+	public static final String resLocation = "res/";
+    public static final String COUNTRY_SETTINGS = resLocation+"Server/countries.settings";
+    public static final String MULTI_SETTINGS = resLocation+"Server/multiplayer.settings";
 
     public static String slurp(final InputStream is){
         final char[] buffer = new char[3019];
@@ -72,6 +76,36 @@ public class IOHandle{
     		answers.put(pair[0], pair[1]);
     	}
     	return answers;
+    }
+    
+    public void writeObject(String loc, Object obj){
+    	try {
+			FileOutputStream saveFile=new FileOutputStream(resLocation+loc);
+			ObjectOutputStream save = new ObjectOutputStream(saveFile);
+			save.writeObject(obj);
+			save.close(); // Closes savefile as well.
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public Object readObject(String loc){
+    	try {
+			FileInputStream saveFile = new FileInputStream(resLocation+loc);
+			ObjectInputStream save = new ObjectInputStream(saveFile);
+			Object obj = save.readObject();
+			save.close();
+			return obj;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
     }
     
 }

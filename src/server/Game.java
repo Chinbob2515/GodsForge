@@ -37,7 +37,11 @@ public class Game {
 
 	public void init(){
         world = new Tile[3][];
-        
+        for(int y = 0; y != 3; y++){
+        	for(int x = 0; x != 3; x++){
+        		world[x][y] = new Tile(x, y);
+        	}
+        }
 	}
 
 	public void run() {

@@ -36,6 +36,10 @@ public class Browse extends Screen{
 					public void response(int eventKey){
 						if(serverSelect < 0) return;
 						Connection.write("1:"+serverSelect);
+						boolean old = Connection.receive().split(":")[1].equals("1");
+						if(!old){
+							launchScreen = new CreatePlayer();
+						}
 						super.response(eventKey);
 					}
 				}
@@ -125,10 +129,6 @@ public class Browse extends Screen{
 					new TypeField(null, "Name", 0.5, 0.2, 0, 0)
 			};
 			interfaces[1].quit = true;
-		}
-		
-		public void logic(){
-			
 		}
 	}
 

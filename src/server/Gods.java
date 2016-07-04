@@ -18,7 +18,7 @@ public class Gods extends Thread implements GameI{
 	public Integer lock = new Integer(1); // Used for thread locking
 	public ArrayList<String> send = new ArrayList<String>();
 	
-	public String user;
+	public String user, name;
 	
 	public int GameId;
 
@@ -102,9 +102,9 @@ public class Gods extends Thread implements GameI{
 			out.println(str);
 			break;
 		case 1: // Enter a game.
-			Server.log("Entering game "+strings[0]);
+			Server.log(user+" entering game "+strings[0]);
 			spin = spins.get(Integer.parseInt(strings[0]));
-			spin.addPlayer(this);
+			out.println("1:"+(spin.addPlayer(this)?1:0));
 			observe = false;
 			synchronized(lock){
 				lock.notifyAll();
@@ -113,7 +113,11 @@ public class Gods extends Thread implements GameI{
 		case 2: // Create a game
 			if(strings[0].equals(""))strings[0] = "Game Name";
 			spins.add(new Spin(strings[0]));
-			out.println("1:"); // Data flushhh! ( oh wait we have no info )
+			out.println("2:"); // Data flushhh! ( oh wait we have no info )
+			break;
+		case 3:
+			if(strings[0].equals(""))strings[0] = "McDougle"; // TODO- add list of names to randomly choose from.
+			name = strings[0];
 			break;
 		/*case 0: 		// Let's just gut the whole list of cases, and hope.
 			Server.log(playern +" choosing country");
@@ -179,7 +183,7 @@ public class Gods extends Thread implements GameI{
             spin.game.setWar(country, country2, subpro==1);
             break;*/ 
 		}
-		Server.log("received string "+string);
+		Server.log(user+" received string "+string);
 	}
 	
 	public void doAuthSend(String string){

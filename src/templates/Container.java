@@ -8,7 +8,7 @@ public class Container extends Interface{
 	
 	public final double SENSITIVITY = 0.1; // Since just using raw scroll data is way too responsive.
 	
-	private ArrayList<Interface> inters = new ArrayList<Interface>();
+	protected ArrayList<Interface> inters = new ArrayList<Interface>();
 	public Interface focused;
 	
 	public Container(Texture tex, double x, double y, double width, double height, Interface[] contains) {
@@ -41,10 +41,10 @@ public class Container extends Interface{
 		focused = null;
 		for(Interface inter: clicksOn){
 			if(inter.zindex == max){
-				if(inter.detailedResponse)
+				if(!inter.detailedResponse){
 					inter.response(eventKey);
-				else
-					inter.response(eventKey, mousex, mousey);
+				}else{
+					inter.response(eventKey, mousex, mousey);}
 				inter.focus = true;
 				id = inter.id;
 				focused = inter;

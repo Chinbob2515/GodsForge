@@ -116,6 +116,7 @@ public abstract class Screen {
 				int eventKey = Mouse.getEventButton();
 				ArrayList<Interface> clicksOn = new ArrayList<Interface>();
 				for(Interface inter: interfaces){
+					if(inter.LOG) System.out.println("thing onclick "+inter.onClick(mousex, mousey, eventKey));
 					if(inter.onClick(mousex, mousey, eventKey)){clicksOn.add(inter);}
 				}
 				int max = -3;
@@ -125,6 +126,7 @@ public abstract class Screen {
 				int id = -1;
 				focused = null;
 				for(Interface inter: clicksOn){
+					if(inter.LOG) System.out.println("thing clicked");
 					if(inter.zindex == max){
 						if(inter.detailedResponse)
 							inter.response(eventKey, mousex, mousey);

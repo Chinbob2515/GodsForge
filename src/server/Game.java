@@ -1,5 +1,7 @@
 package server;
 
+import game.Tile;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,6 +24,7 @@ public class Game {
 	public boolean run = true;
 	
 	// public [playerObject][] list
+	public Tile[][] world;
 
 	public boolean retry = false, showbd = false;
 	public ArrayList<Integer> players = new ArrayList<Integer>();
@@ -33,7 +36,8 @@ public class Game {
 	}
 
 	public void init(){
-        // Set up stuff, I guess
+        world = new Tile[3][];
+        
 	}
 
 	public void run() {

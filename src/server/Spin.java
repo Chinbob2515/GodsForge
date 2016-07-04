@@ -36,11 +36,12 @@ public class Spin extends Thread{
 		return 0;
 	}
 
-	public void addPlayer(Gods gods){
-		if(connect(gods) == 1){return;} // If you can plug it in place of user's other instance, do.
+	public boolean addPlayer(Gods gods){
+		if(connect(gods) == 1){return true;} // If you can plug it in place of user's other instance, do.
 		players[nPlayers++] = gods;
 		gods.GameId = idCounter++;
 		sendPlayer(nPlayers - 1, 0, null, null);
+		return false;
 	}
 
 	public void removePlayer(){

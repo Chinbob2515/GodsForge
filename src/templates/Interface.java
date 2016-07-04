@@ -24,13 +24,13 @@ public abstract class Interface {
 	public int id, zindex = 0;
 	
 	public Interface(Texture tex, int x, int y, int width, int height){
-		background = tex;
+		background = tex;			// ...
 		type = 0; 					// THIS TYPE IS BASICALLY DEPRECATED AT THIS POINT- NOTHING WORKS WITH IT
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.id = assignID();
+		this.x = x;					// ...
+		this.y = y;					// ...
+		this.width = width;			// ...
+		this.height = height;		// ...
+		this.id = assignID();		// ...
 	}
 	
 	public Interface(Texture tex, double x, double y, double width, double height){
@@ -104,8 +104,12 @@ public abstract class Interface {
 	
 	public void setX(double x){dx = x;}
 	public void setY(double y){dy = y;}
+	public int getrX(){if(type == 0){return x;}else{return (int) (dx);}}
+	public int getrY(){if(type == 0){return y;}else{return (int) (dy);}}
 	public int getX(){if(type == 0){return x;}else{return (int) (dx*Graphics.WIDTH);}}
 	public int getY(){if(type == 0){return y;}else{return (int) (dy*Graphics.HEIGHT);}}
+	public int getrWidth(){if(type == 0){return width;}else{return (int) (dwidth);}}
+	public int getrHeight(){if(type == 0){return height;}else{return (int) (dheight);}}
 	public int getWidth(){if(type == 0){return width;}else{return (int) (dwidth*Graphics.WIDTH);}}
 	public int getHeight(){if(type == 0){return height;}else{return (int) (dheight*Graphics.HEIGHT);}}
 	

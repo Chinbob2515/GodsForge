@@ -116,5 +116,9 @@ public class Server extends Thread {
 			System.exit(0);
 	}
 
+	public static void log(boolean empty) {
+		if(LOG)System.out.println(empty);
+	}
+
 }
 

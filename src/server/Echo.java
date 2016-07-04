@@ -18,7 +18,7 @@ public class Echo extends Thread implements GameI{
 			if(!send.isEmpty()){
 				String string = send.remove(0);
 				out.println(string);
-			} else if(hi){System.out.println(send.isEmpty());hi=false;}
+			} else if(hi){Server.log(send.isEmpty());hi=false;}
 			try{
 			Thread.sleep(4000);}catch(InterruptedException e){}
 		}
@@ -34,7 +34,7 @@ public class Echo extends Thread implements GameI{
 	}
 
 	public static void main(String[] args){
-		System.out.println("Echo game set up");
+		Server.log("Echo game set up");
 	}
 
 }

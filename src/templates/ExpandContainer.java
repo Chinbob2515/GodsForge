@@ -12,7 +12,7 @@ public class ExpandContainer extends Container{
 	public String defValue;
 
 	public ExpandContainer(Texture tex, TextField txfld, double x, double y, Interface[] contains) {
-		super(tex, x+txfld.dwidth/2, y, 0, 0, contains);
+		super(tex==null?Graphics.loadTex("goDown"):tex, x+txfld.dwidth/2, y, 0, 0, contains);
 		defwidth = dwidth;
 		defheight = dheight;
 		rwidth = dwidth = (float)(Graphics.fontWidth(0, txfld.getValue()))/Graphics.WIDTH;

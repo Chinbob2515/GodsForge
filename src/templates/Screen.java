@@ -80,8 +80,11 @@ public abstract class Screen {
 			Draw.renderthistex(new Rectangle(0,0,WIDTH, HEIGHT), background);
 		
 		if(interfaces != null){
-			for(Interface inter: interfaces){
-				inter.render();
+			for(int i = -3; i <= 3; i ++){
+				for(Interface inter: interfaces){
+					if(inter.zindex == i)
+						inter.render();
+				}
 			}
 		}
 		render2();

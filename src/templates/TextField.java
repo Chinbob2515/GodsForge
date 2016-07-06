@@ -8,6 +8,7 @@ import org.newdawn.slick.opengl.Texture;
 public class TextField extends Interface{
 
 	public String text;
+	private int drawnBy = 0;
 	
 	public TextField(Texture tex, String words, int x, int y, int width, int height){
 		super(tex, x, y, width, height);
@@ -60,12 +61,12 @@ public class TextField extends Interface{
 		}
 		if(hover){
 			if(inside(parent.mousex, parent.mousey)){
-				Graphics.fonts[0].drawString(getX(), getY(), draw, new Color(0, 0, 0));
+				Graphics.fonts[drawnBy].drawString(getX(), getY(), draw, new Color(0, 0, 0));
 			}else{
-				Graphics.fonts[0].drawString(getX(), getY(), draw);
+				Graphics.fonts[drawnBy].drawString(getX(), getY(), draw);
 			}
 		}else{
-			Graphics.fonts[0].drawString(getX(), getY(), draw);//Graphics.fonts[0].drawString(getX()-Graphics.fontWidth(0, draw)/2, getY()-Graphics.fontHeight(0, draw)/2, draw);
+			Graphics.fonts[drawnBy].drawString(getX(), getY(), draw);//Graphics.fonts[0].drawString(getX()-Graphics.fontWidth(0, draw)/2, getY()-Graphics.fontHeight(0, draw)/2, draw);
 		}
 	}
 	
@@ -78,6 +79,13 @@ public class TextField extends Interface{
 	
 	public String getValue(){
 		return text;
+	}
+	
+	public void setSize(int size){
+		Graphics.addFont(size);
+		drawnBy = Graphics.fonts.length-1;
+		setWidth((float)(Graphics.fontWidth(drawnBy, text))/Graphics.WIDTH);
+		setHeight((float)(Graphics.fontHeight(drawnBy, text))/Graphics.HEIGHT);
 	}
 
 }

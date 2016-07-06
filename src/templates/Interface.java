@@ -11,7 +11,7 @@ public abstract class Interface {
 	private static int ID = 0;
 	
 	public boolean LOG;
-	protected Texture background;
+	public Texture background;
 	protected int type; // Absolute, ratio
 	
 	protected int x, y, width, height;
@@ -58,6 +58,8 @@ public abstract class Interface {
 	public void render(){
 		renderBackground();
 		if(background != null){
+			if(LOG)
+				System.out.println("drawing back");
 			Draw.renderthistex(getRectangle(), background);
 		}
 	}
@@ -102,6 +104,16 @@ public abstract class Interface {
 	
 	public void renderBackground(){}
 	
+	public void setWidth(double width){
+		dx += dwidth/2;
+		dwidth = width;
+		dx -= dwidth/2;
+	}
+	public void setHeight(double height){
+		dy += dheight/2;
+		dheight = height;
+		dy -= dheight/2;
+	}
 	public void setX(double x){dx = x;}
 	public void setY(double y){dy = y;}
 	public int getrX(){if(type == 0){return x;}else{return (int) (dx);}}

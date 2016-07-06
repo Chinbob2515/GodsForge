@@ -42,13 +42,16 @@ public class Graphics {
 	public static int RWIDTH, RHEIGHT;
 	public static final String FONT_TYPE = "Times New Roman";
 	public static UnicodeFont[] fonts;
-	public static Texture[] images;
+	public static Texture[] images, defaultImages, userImages;
+	public static String[] defaultNames, userNames;
 	
 	//public static int mousex, mousey;
 	
 	public static void init(){
 		init_LWJGL(IOHandle.getSettings());
 		loadImages();
+		loadDefaultImages();
+		loadUserImages();
 		loadSounds();
 		initFont();
 		loaded = true;
@@ -69,10 +72,28 @@ public class Graphics {
 		
 	}
 	
-	@SuppressWarnings("unchecked")
+	private static void loadDefaultImages(){
+		File[] things = IOHandle.getFileListing("res/defaultImages");
+		defaultNames = IOHandle.getListing("res/defaultImages");
+		defaultImages = new Texture[things.length];
+		for(int i = 0; i != defaultImages.length; i++){
+			defaultImages[i] = loadTex(things[i].getPath());
+		}
+	}
+	
+	private static void loadUserImages(){
+		File[] things = IOHandle.getFileListing("res/addedImages");
+		userNames = IOHandle.getListing("res/addedImages");
+		userImages = new Texture[things.length];
+		for(int i = 0; i != userImages.length; i++){
+			userImages[i] = loadTex(things[i].getPath());
+		}
+	}
+	
 	private static void initFont() {
-		fonts = new UnicodeFont[1];
-	    Font font = new Font(FONT_TYPE, Font.BOLD, 60);
+		fonts = new UnicodeFont[0];
+		addFont(60);
+	    /*Font font = new Font(FONT_TYPE, Font.BOLD, 60);
 	    fonts[0] = new UnicodeFont(font);
 	    fonts[0].addAsciiGlyphs();
 	    fonts[0].addGlyphs(400, 600);
@@ -84,7 +105,30 @@ public class Graphics {
 		    System.out.println("something went wrong here!");
 		    e.printStackTrace();
 		    Display.destroy();
+	    }*/
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void addFont(int size){
+		UnicodeFont[] old = fonts;
+	    Font font = new Font(FONT_TYPE, Font.BOLD, size);
+	    UnicodeFont ufont = new UnicodeFont(font);
+	    ufont.addAsciiGlyphs();
+	    ufont.addGlyphs(400, 600);
+	    ufont.getEffects().add(new ColorEffect(java.awt.Color.white));
+	    
+	    try {
+	    	ufont.loadGlyphs();
+	    } catch (SlickException e) {
+		    System.out.println("something went wrong here!");
+		    e.printStackTrace();
+		    Display.destroy();
 	    }
+	    fonts = new UnicodeFont[fonts.length+1];
+	    for(int i = 0; i != fonts.length-1; i++){
+	    	fonts[i] = old[i];
+	    }
+	    fonts[fonts.length-1] = ufont;
 	}
 	
 	private static void init_LWJGL(int[] settings){
@@ -153,8 +197,9 @@ public class Graphics {
 	
 	public static Texture loadTex(String name){
 		Texture answer = null;
+		String path = (name.startsWith("res\\")?"":"res\\")+name+(name.endsWith(".png")?"":".png");
 		try {
-			answer = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/"+name+".png")));
+			answer = TextureLoader.getTexture("PNG", new FileInputStream(new File(path)));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {

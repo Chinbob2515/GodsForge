@@ -6,7 +6,7 @@ import org.newdawn.slick.opengl.Texture;
 
 public class ExpandContainer extends Container{
 	
-	private boolean expanded;
+	private boolean expanded, chosen;
 	public double defwidth, defheight, rwidth, rheight;
 	public TextField textField;
 	public String defValue;
@@ -17,15 +17,20 @@ public class ExpandContainer extends Container{
 		defheight = dheight;
 		rwidth = dwidth = (float)(Graphics.fontWidth(0, txfld.getValue()))/Graphics.WIDTH;
 		rheight = dheight = (float)(Graphics.fontHeight(0, txfld.getValue()))/Graphics.HEIGHT;
+		if(dwidth > defwidth)
+			defwidth = dwidth;
 		txfld.setY(txfld.getrY()-txfld.getrHeight());
 		txfld.setX(dx);
 		textField = txfld;
 		defValue = txfld.getValue();
 		hover = true; // REINFORCE THIS
+		double heightcount = 0;
 		for(Interface inter: contains){
-			inter.setY(inter.dy+txfld.dheight);
-			inter.launchScreen = new fillValue(inter.getValue(), id);
+			inter.setY((double)inter.dy+txfld.dheight+heightcount); // For some reason inter.dy HAS to be added in, so has to be 0.0
+			heightcount += inter.dheight;
+			inter.launchScreen = new fillValue(inter.getValue(), id); // Use an invisible screen to launch and then fill value.
 		}
+		defheight = heightcount;
 	}
 	
 	public ExpandContainer(Texture tex, String words, double x, double y, Interface[] contains){
@@ -36,20 +41,13 @@ public class ExpandContainer extends Container{
 		textField.setY(textField.dy + dy + (expanded?0:getrHeight()));
 		textField.render();
 		textField.setY(textField.dy - dy - (expanded?0:getrHeight()));
-		/*if(addi != null){
-			draw = draw + addi[0];
-		}
-		if(adds != null){
-			draw = draw + adds[0];
-		}*/ // We'll never need this? Right?
 		if(focus){
-			//setY(dy + textField.height);
 			super.render();
-			//setY(dy - textField.height);
 		} else if(expanded){
 			expanded = !expanded;
 			dwidth = rwidth;
 			dheight = rheight;
+			zindex = 1;
 		}
 	}
 	
@@ -61,6 +59,7 @@ public class ExpandContainer extends Container{
 	public void response(int eventKey, int mousex, int mousey){
 		super.response(eventKey, mousex, mousey);
 		if(!expanded){
+			zindex = 3;
 			dwidth = defwidth;
 			dheight = defheight;
 			dheight += textField.dheight;
@@ -69,7 +68,15 @@ public class ExpandContainer extends Container{
 	}
 	
 	public void setValue(String string){
+		chosen = true;
 		textField.setValue(string);
+	}
+	
+	public String getValue(){
+		if(chosen)
+			return textField.getValue();
+		else
+			return null;
 	}
 	
 	public class fillValue extends Screen{

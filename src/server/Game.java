@@ -15,7 +15,6 @@ import java.awt.Font;
 public class Game {
 
 	public static final Random rand = new Random();
-	public static final int WIDTH = 1000, HEIGHT = 1000;
 	public static int theight, twidth; // Tile width, tile height
 
     public Spin spin;
@@ -23,7 +22,7 @@ public class Game {
 	public int idCounter = 0;
 	public boolean run = true;
 	
-	// public [playerObject][] list
+	// public [playerObject][] list (or is that just a spin or gods object?)
 	public Tile[][] world;
 
 	public boolean retry = false, showbd = false;

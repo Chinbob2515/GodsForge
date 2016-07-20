@@ -9,7 +9,7 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 	public static final int nInGame = 6;
 	public static int updateInterval;
 	public static Auth auth = new Auth();
-
+	
 	public static int games = 0;
 	public static ArrayList<Spin> spins = new ArrayList<Spin>();
 	private Spin spin;
@@ -114,7 +114,8 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 			break;
 		case 2: // Create a game
 			if(strings[0].equals(""))strings[0] = "Game Name";
-			spins.add(new Spin(strings[0]));
+			spin = new Spin(strings[0]);
+			spins.add(spin);
 			out.println("2:"); // Data flushhh! ( oh wait we have no info )
 			break;
 		case 3: // Create a player
@@ -126,15 +127,16 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 			texLoc = strings[4];
 			addedTex = strings[5].equals("1");
 			if(addedTex){
-				System.out.println("doing file thing by server");
-				files.Server.threadIt("res/Server/userImages/"+texLoc);
-				System.out.println("sending go go go");
-				out.println("go go go");
+				transfer.FileServer.threadIt("res/Server/userImages/"+texLoc);
+				out.println("go go go"); // Tell client we're ready (i.e. unblock its thread)
 			} else System.out.println("not doing file thing");
 			break;
 			
 		case 30: // I guess this is meant to be a custom code to prompt a file server- should probably contain path save request.
 			//FileServer.main(new String[0], 1);
+			break;
+		case 31: // Send a test tile over the socket.
+			
 			break;
 		}
 		Server.log(user+" received string "+string);

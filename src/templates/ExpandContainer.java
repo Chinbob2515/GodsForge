@@ -79,6 +79,13 @@ public class ExpandContainer extends Container{
 			return null;
 	}
 	
+	public static void setSize(TextField[] input, int size){
+		for(TextField inter: input){
+			inter.setSize(size);
+			inter.dx = 0;
+		}
+	}
+	
 	public class fillValue extends Screen{
 		
 		public String value;

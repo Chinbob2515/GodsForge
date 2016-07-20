@@ -1,9 +1,10 @@
 package server;
 
 import java.util.ArrayList;
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 
-public class Gods extends Thread implements GameI{
+public class Gods extends Thread implements GameI{ //  Basically holding and relaying a single player's information.
 
 	public static final int nInGame = 6;
 	public static int updateInterval;
@@ -14,16 +15,24 @@ public class Gods extends Thread implements GameI{
 	public static ArrayList<Spin> spins = new ArrayList<Spin>();
 	private Spin spin;
 	private PrintWriter out;
+	public BufferedReader in;
 	public boolean runB = true, hi = false, observe = true;
 	public Integer lock = new Integer(1); // Used for thread locking
 	public ArrayList<String> send = new ArrayList<String>();
+	
+	public String[] greater, lesser;
+	public String texLoc;
+	public boolean addedTex;
 	
 	public String user, name;
 	
 	public int GameId;
 
-	public Gods(PrintWriter out, int id){
+	public Gods(PrintWriter out, int id, BufferedReader in){
 		this.out = out;
+		this.in = in;
+		FileServer.biggerOut = out;
+		FileServer.biggerIn = in;
 		Gods.id = id; // Just what? Static ID tracker?
 		//this.playern = clients % nInGame;
 		//clients++;
@@ -89,7 +98,6 @@ public class Gods extends Thread implements GameI{
 		 * */
 	    int subpro, x, y, id, country, country2, reserve;
 		send.add(string);
-		//hi = true; Probably an old indicator? IDK?
 		String[] strings = string.split(":");
 		int protocol = Integer.parseInt(strings[0]);
 		strings = strings[1].split(";");
@@ -115,73 +123,30 @@ public class Gods extends Thread implements GameI{
 			spins.add(new Spin(strings[0]));
 			out.println("2:"); // Data flushhh! ( oh wait we have no info )
 			break;
-		case 3:
+		case 3: // Create a player
 			if(strings[0].equals(""))strings[0] = "McDougle"; // TODO- add list of names to randomly choose from.
 			name = strings[0];
+			greater = new String[]{strings[1]};
+			lesser = new String[]{strings[2], strings[3]};
+			texLoc = strings[4];
+			addedTex = strings[5].equals("1");
+			if(addedTex){
+				System.out.println("doing file thing by server");
+				FileServer.main(new String[0], 1);
+				out.println("30:;"); //Unblock predictable file transfer.
+				synchronized(FileServer.plock){
+					try {
+						FileServer.plock.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			} else System.out.println("not doing file thing");
 			break;
-		/*case 0: 		// Let's just gut the whole list of cases, and hope.
-			Server.log(playern +" choosing country");
-			spin.chooseCountry(playern, Integer.parseInt(strings[0]));
+			
+		case 30:
+			FileServer.main(new String[0], 1);
 			break;
-		case 1:
-			this.end();
-			break;
-        case 10:
-            subpro = Integer.parseInt(strings[0]);
-            switch(subpro){
-            case 0:
-                x = Integer.parseInt(strings[1]);
-                y = Integer.parseInt(strings[2]);
-                id = Integer.parseInt(strings[3]);
-                country = Integer.parseInt(strings[4]);
-                if(strings.length == 6){
-                    reserve = 2;
-                } else {
-                    reserve = 0;
-                }
-                synchronized(spin.game.countries[country].add){
-                    spin.game.countries[country].add.add(new int[]{reserve, x, y, country, id});
-                }
-                break;
-            case 1:
-                // This should never be sent. The server is fully in charge of destroying soldiers.
-                break;
-            case 2:
-                x = Integer.parseInt(strings[1]);
-                y = Integer.parseInt(strings[2]);
-                id = Integer.parseInt(strings[3]);
-                synchronized(spin.game.countries[0].add){
-                    spin.game.countries[0].add.add(new int[]{1, x, y, id});
-                }
-                break;
-            }
-            break;
-        case 11:
-            subpro = Integer.parseInt(strings[0]);
-            x = Integer.parseInt(strings[2]);
-            y = Integer.parseInt(strings[3]);
-            country = Integer.parseInt(strings[4]);
-            if(Integer.parseInt(strings[1]) == 1){
-                switch(subpro){
-                case 0:
-                    spin.game.countries[country].AImineAdd(x, y);
-                    break;
-                case 1:
-                    spin.game.countries[country].AIopiumAdd(x, y);
-                    break;
-                case 2:
-                    break;
-                }
-            } else {
-                Server.log("Nothing has been programmed to happen here");
-            }
-            break;
-        case 14:
-            subpro = Integer.parseInt(strings[0]);
-            country = Integer.parseInt(strings[1]);
-            country2 = Integer.parseInt(strings[2]);
-            spin.game.setWar(country, country2, subpro==1);
-            break;*/ 
 		}
 		Server.log(user+" received string "+string);
 	}

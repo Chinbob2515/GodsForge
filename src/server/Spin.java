@@ -40,7 +40,7 @@ public class Spin extends Thread{
 		if(connect(gods) == 1){return true;} // If you can plug it in place of user's other instance, do.
 		players[nPlayers++] = gods;
 		gods.GameId = idCounter++;
-		sendPlayer(nPlayers - 1, 0, null, null);
+		//sendPlayer(nPlayers - 1, 0, null, null);
 		return false;
 	}
 

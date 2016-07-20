@@ -64,7 +64,7 @@ public class IOHandle{
     	if(settings.equals("")){
     		return answers;
     	}
-    	String[] keys = new String[]{"port", "update_interval", "warmup_interval", "warmup_start", "min_players"};
+    	String[] keys = new String[]{"port", "update_interval", "warmup_interval", "warmup_start", "min_players", "fileport"};
     	String[] pairs = settings.split(";");
     	for(int i = 0; i != pairs.length; i++){
     		String[] pair = pairs[i].toLowerCase().trim().split(":");

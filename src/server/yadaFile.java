@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class File{
+public class yadaFile{ // never use this
 	public static String path = "./plugins/";
 	public static void writeFile(OutputStream os, String fpath){
 		

@@ -36,7 +36,13 @@ public class Browse extends Screen{
 					public void response(int eventKey){
 						if(serverSelect < 0) return;
 						Connection.write("1:"+serverSelect);
-						boolean old = Connection.receive().split(":")[1].equals("1");
+						String temp = Connection.receive();
+						while(!temp.split(":")[0].equals("1")){
+							System.out.println("temp is "+temp);
+							temp = Connection.receive();
+						}
+						System.out.println("temp is "+temp);
+						boolean old = temp.split(":")[1].equals("1");
 						if(!old){
 							launchScreen = new CreatePlayer();
 						}

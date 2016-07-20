@@ -92,14 +92,6 @@ public class IOHandle {
 			if(!str.startsWith("Thumb"))
 				bob.add(str);
 		}
-		//for(int i = 0; i != list.length; i++){
-		//	if(list[i].startsWith("Thumbs")){
-		//		String[] list2 = new String[list.length-1];
-		//		for(int a = 0; a != list.length-1; a++){
-		//			list2[a] = list[a]
-		//		}
-		//	}
-		//}
 		String[] returns = new String[bob.size()];
 		for(int i = 0; i != returns.length; i++) returns[i] = bob.get(i);
 		return returns;
@@ -109,7 +101,7 @@ public class IOHandle {
 		String[] names = getListing(loc);
 		if(!loc.endsWith("\\") && !loc.endsWith("/")) loc += "/";
 		File[] files = new File[names.length];
-		for(int i = 0; i != files.length; i++){files[i] = new File(loc+names[i]);System.out.println(loc+names[i]);}
+		for(int i = 0; i != files.length; i++){files[i] = new File(loc+names[i]);}
 		return files;
 	}
 	

@@ -201,9 +201,9 @@ public class Graphics {
 		try {
 			answer = TextureLoader.getTexture("PNG", new FileInputStream(new File(path)));
 		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+			//e1.printStackTrace();
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			//e1.printStackTrace();
 		}
 		return answer;
 	}

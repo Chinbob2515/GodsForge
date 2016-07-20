@@ -94,7 +94,7 @@ public class Handler extends Thread{
 				if(inputLine.length() < 6){out.println("Wrong usage, try again");continue;}
 				inputLine = inputLine.substring(5, inputLine.length());
 				out.println("\f"+"shrek.png");
-				File.writeFile(os, "shrek.png");
+				//File.writeFile(os, "shrek.png"); // never do this, it is stupid
 				out.println("\n");
 				out.println("\f");
 				Server.log("hi, " + inputLine);
@@ -116,7 +116,7 @@ public class Handler extends Thread{
 					gameO.start();
 					break;
 				case 1:
-					gameO = new Gods(out, number);
+					gameO = new Gods(out, number, in);
 					gameO.start();
 					break;
 				}

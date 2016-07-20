@@ -31,8 +31,8 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 	public Gods(PrintWriter out, int id, BufferedReader in){
 		this.out = out;
 		this.in = in;
-		FileServer.biggerOut = out;
-		FileServer.biggerIn = in;
+		//FileServer.biggerOut = out;
+		//FileServer.biggerIn = in;
 		Gods.id = id; // Just what? Static ID tracker?
 		//this.playern = clients % nInGame;
 		//clients++;
@@ -132,7 +132,7 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 			addedTex = strings[5].equals("1");
 			if(addedTex){
 				System.out.println("doing file thing by server");
-				FileServer.main(new String[0], 1);
+				/*FileServer.main(new String[0], 1);
 				out.println("30:;"); //Unblock predictable file transfer.
 				synchronized(FileServer.plock){
 					try {
@@ -140,12 +140,12 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-				}
+				}*/
 			} else System.out.println("not doing file thing");
 			break;
 			
 		case 30:
-			FileServer.main(new String[0], 1);
+			//FileServer.main(new String[0], 1);
 			break;
 		}
 		Server.log(user+" received string "+string);

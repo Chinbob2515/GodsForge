@@ -10,8 +10,7 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 	public static int updateInterval;
 	public static Auth auth = new Auth();
 
-	public static int games = 0, /*clients = 0,*/ id;
-	//public int playern;
+	public static int games = 0;
 	public static ArrayList<Spin> spins = new ArrayList<Spin>();
 	private Spin spin;
 	private PrintWriter out;
@@ -31,11 +30,6 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 	public Gods(PrintWriter out, int id, BufferedReader in){
 		this.out = out;
 		this.in = in;
-		//FileServer.biggerOut = out;
-		//FileServer.biggerIn = in;
-		Gods.id = id; // Just what? Static ID tracker?
-		//this.playern = clients % nInGame;
-		//clients++;
 	}
 
 	public void run(){
@@ -72,7 +66,7 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 	public void sendReject(int country){
         String string;
         string = "3:"+country;
-        Server.log(id + "rejecting country choice!");
+        Server.log(GameId + "rejecting country choice!");
         out.println(string);
         spin.sendAll(2, null, null);
 	}
@@ -124,7 +118,8 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 			out.println("2:"); // Data flushhh! ( oh wait we have no info )
 			break;
 		case 3: // Create a player
-			if(strings[0].equals(""))strings[0] = "McDougle"; // TODO- add list of names to randomly choose from.
+			if(strings[0].equals(""))strings[0] = "McDougle"; // TODO- add list of cool names to randomly choose from.
+			System.out.println(string);
 			name = strings[0];
 			greater = new String[]{strings[1]};
 			lesser = new String[]{strings[2], strings[3]};
@@ -132,19 +127,13 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 			addedTex = strings[5].equals("1");
 			if(addedTex){
 				System.out.println("doing file thing by server");
-				/*FileServer.main(new String[0], 1);
-				out.println("30:;"); //Unblock predictable file transfer.
-				synchronized(FileServer.plock){
-					try {
-						FileServer.plock.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}*/
+				files.Server.threadIt("res/Server/userImages/"+texLoc);
+				System.out.println("sending go go go");
+				out.println("go go go");
 			} else System.out.println("not doing file thing");
 			break;
 			
-		case 30:
+		case 30: // I guess this is meant to be a custom code to prompt a file server- should probably contain path save request.
 			//FileServer.main(new String[0], 1);
 			break;
 		}

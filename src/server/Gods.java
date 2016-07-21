@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
+import transfer.ObjectClient;
+
 public class Gods extends Thread implements GameI{ //  Basically holding and relaying a single player's information.
 
 	public static final int nInGame = 6;
@@ -130,6 +132,7 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 				transfer.FileServer.threadIt("res/Server/userImages/"+texLoc);
 				out.println("go go go"); // Tell client we're ready (i.e. unblock its thread)
 			} else System.out.println("not doing file thing");
+			ObjectClient.main(spin.game.world[0][0]);
 			break;
 			
 		case 30: // I guess this is meant to be a custom code to prompt a file server- should probably contain path save request.

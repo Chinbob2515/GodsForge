@@ -2,7 +2,7 @@ package main;
 
 import org.newdawn.slick.opengl.Texture;
 
-import game.Game;
+import game.GameScreen;
 import helpers.Connection;
 import helpers.Draw;
 import helpers.Graphics;
@@ -52,7 +52,7 @@ public class Browse extends Screen{
 		};
 		interfaces[0].quit = true;
 		interfaces[1].launchScreen = new CreateGame();
-		interfaces[4].launchScreen = new Game();
+		interfaces[4].launchScreen = new GameScreen();
 		LOG = true;
 		//doThing(); Crashes things for no reason?
 	}

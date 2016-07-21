@@ -1,14 +1,14 @@
 package main;
 
-import game.Game;
+import game.GameScreen;
 import helpers.Connection;
-import helpers.FileClient;
 import helpers.Graphics;
 import templates.ExpandContainer;
 import templates.Interface;
 import templates.Screen;
 import templates.TextField;
 import templates.TypeField;
+import transfer.FileClient;
 
 public class CreatePlayer extends Screen{
 
@@ -23,20 +23,12 @@ public class CreatePlayer extends Screen{
 				new TextField("Finish", 1.0, 1){
 					public void response(int eventkey){
 						Connection.write("3:"+parent.interfaces[3].getValue()+";"+parent.interfaces[4].getValue()+";"+parent.interfaces[5].getValue()+";"+parent.interfaces[6].getValue()+";"+parent.interfaces[7].getValue()+";"+(defaultList?0:1));
-						//String recv = Connection.receive();
-						//if(!recv.split(":")[0].equals("1")){
-						//	System.out.println("ohhhhh noooooooo:"+recv);
-						//	return;
-						//}
-						//@SuppressWarnings("unused")
-						//boolean addPlayer = recv.split(":")[1].equals("1");
-						//recv = Connection.receive();
-						//if(!recv.equals("30:;")){
-						//	System.out.println("ohhhhh noooooooo:"+recv);
-						//	return;
-						//}
-						System.out.println("code verified"); // ??? wtf does this mean?
-						FileClient.main(new String[]{"res/addedImages/"+parent.interfaces[7].getValue()}, 0);
+						
+						if(!defaultList){
+							Connection.receive(); // Wait till server tells up a file server is ready.
+							FileClient.main("res/addedImages/"+currentValue);
+						}
+						
 						parent.run = false;
 						super.response(eventkey);
 					}
@@ -58,7 +50,7 @@ public class CreatePlayer extends Screen{
 				new TextField(Graphics.loadTex("grey.png"), "", 0.0, 0, 0.2, 0.2)
 		};
 		interfaces[1].quit = true;
-		interfaces[2].launchScreen = new Game();
+		interfaces[2].launchScreen = new GameScreen();
 		TextField[] inters = new TextField[Graphics.defaultImages.length+Graphics.userImages.length];
 		for(int i = 0; i != inters.length; i++){
 			String name;

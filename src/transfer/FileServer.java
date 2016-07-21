@@ -1,13 +1,31 @@
-package files;
+package transfer;
 
 import java.io.*;
 import java.net.*;
 
-public class Server {
+public class FileServer extends Thread{
 	
 	public static final int port = 4444;
 	
+	private String path;
+	
+	public FileServer(String path){
+		this.path = path;
+	}
+	
+	public void run(){
+		FileServer.main(path);
+	}
+	
+	public static void threadIt(String path){
+		FileServer server = new FileServer(path);
+		server.start();
+	}
+	
     public static void main(String path) {
+    	
+    	server.Server.log("downloading "+path+" (WARNING: may not be actually be done by the server per se- but logged through it anyway)");
+    	
         ServerSocket serverSocket = null;
 
         try {
@@ -36,7 +54,7 @@ public class Server {
             return;
         }
 
-        byte[] bytes = new byte[16*1024];
+        byte[] bytes = new byte[16*1024]; // Where did this come from? Answer: who knows? (e.g. stackoverflow) (that rhymes)
 
         int count;
         try {

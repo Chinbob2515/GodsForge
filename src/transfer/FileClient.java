@@ -1,4 +1,6 @@
-package files;
+package transfer;
+
+import helpers.Connection;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,11 +9,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Client {
+public class FileClient {
 	
 	// I HATE FILE TRANSFER. USE THIS ONE TO UPLOAD FILES, EVEN IF YOU'RE NOT A CLIENT, AND DO IT ONE BY ONE. OR ELSE.
 	
 	public static final int port = 4444;
+	
+	public static void main(String path) {
+		try {
+			main(Connection.hostName, path);
+		} catch (IOException e) {
+			System.out.println("Crap"); // Unique error swear.
+		}
+	}
 	
     public static void main(String ip, String path) throws IOException {
         Socket socket = null;

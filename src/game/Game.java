@@ -1,11 +1,5 @@
 package game;
 
-import templates.Screen;
-
-public class Game extends Screen{
-
-	public Game() {
-		super();
-	}
+public class Game {
 
 }

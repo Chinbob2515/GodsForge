@@ -1,6 +1,6 @@
 package helpers;
 
-import game.GameScreen;
+import game.Game;
 import game.Tile;
 import transfer.ObjectServer;
 
@@ -8,12 +8,13 @@ public class ReceiveThread extends Thread{
 	
 	private boolean run = true;
 	
-	private GameScreen owner;
+	private Game owner;
 	
-	public ReceiveThread(GameScreen game){
+	public ReceiveThread(Game game){
 		owner = game;
 	}
 	
+	@SuppressWarnings("unused")
 	public void run(){
 		while(run){
 			String string = Connection.receive();
@@ -23,7 +24,7 @@ public class ReceiveThread extends Thread{
 			switch(code){
 			case 32:
 				Tile tile = (Tile) ObjectServer.main();
-				
+				owner.world[tile.getX()][tile.getY()] = tile;
 				break;
 			default:
 				System.out.println("Unknown code for received string: "+string);

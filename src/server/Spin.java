@@ -22,6 +22,7 @@ public class Spin extends Thread{
 		for(int i = 0; i != players.length; i++){
 			playersc[i] = -1;
 		}
+		game = new Game(this);
 	}
 	
 	public int connect(Gods god){ // To plug your "Gods" object into this instance, for the right user (0-Failed;1-Done).

@@ -5,14 +5,16 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import java.util.ArrayList;
+
 public class ObjectServer extends Thread{
 	
 	public static final int port = 4445;
 	
-	public Object object;
+	public static ArrayList<Object> objects = new ArrayList<Object>();
 	
 	public void run(){
-		object = ObjectServer.main();
+		ObjectServer.main();
 	}
 	
 	public static Object main(){
@@ -28,7 +30,9 @@ public class ObjectServer extends Thread{
 
         Socket socket = null;
         ObjectInputStream in = null;
-
+	
+	while(true){
+	
         try {
             socket = serverSocket.accept();
             in = new ObjectInputStream(socket.getInputStream());
@@ -54,7 +58,8 @@ public class ObjectServer extends Thread{
 			e.printStackTrace();
 		}
         
-        return object;
+        objects.add(object);
+	}
 	}
 	
 }

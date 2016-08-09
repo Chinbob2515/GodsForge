@@ -4,10 +4,15 @@ import templates.Screen;
 
 public class GameScreen extends Screen{
 	
-	Tile[][] world;
+	public Game game;
 	
 	public GameScreen() {
 		super();
+	}
+	
+	public void start(){
+		super.start();
+		game = new Game();
 	}
 
 }

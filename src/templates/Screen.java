@@ -44,8 +44,8 @@ public abstract class Screen {
 		if(background == null)
 			background = Graphics.loadTex(resLocation+NAME);
 		this.background = background;
-		statics = new ArrayList<Integer[]>(); // Completely forgot the point of this- maybe originally meant to simple interfaces?
-		dynamics = new ArrayList<Integer[]>(); 
+		statics = new ArrayList<Integer[]>(); // Completely forgot the point of this- maybe originally meant to be simple interfaces?
+		dynamics = new ArrayList<Integer[]>();// ^ ^ ^
 		Settings.screens.add(this);
 		interfaces = new Interface[0]; // To prevent null pointer exceptions
 	}

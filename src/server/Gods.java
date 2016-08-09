@@ -1,5 +1,7 @@
 package server;
 
+import game.Tile;
+
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -18,7 +20,7 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 	private PrintWriter out;
 	public BufferedReader in;
 	public boolean runB = true, hi = false, observe = true;
-	public Integer lock = new Integer(1); // Used for thread locking
+	public Integer lock = new Integer(1), ready = new Integer(1); // Used for thread locking
 	public ArrayList<String> send = new ArrayList<String>();
 	
 	public String[] greater, lesser;
@@ -128,11 +130,22 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 			lesser = new String[]{strings[2], strings[3]};
 			texLoc = strings[4];
 			addedTex = strings[5].equals("1");
+			
+			if(!spin.game.started)
+				spin.game.init();
+			
 			if(addedTex){
 				transfer.FileServer.threadIt("res/Server/userImages/"+texLoc);
 				out.println("go go go"); // Tell client we're ready (i.e. unblock its thread)
-			} else System.out.println("not doing file thing");
-			ObjectClient.main(spin.game.world[0][0]);
+			} else Server.log("not doing file thing");
+			for(Tile[] tiles: spin.game.world){
+				for(Tile tile: tiles){
+					(new ObjectClient(ready, tile)).start();
+					break;
+				}
+				break;
+			}
+			out.println("33:;"); // Says to set up servers now- so "ready" isn't sent too soon.
 			break;
 			
 		case 30: // I guess this is meant to be a custom code to prompt a file server- should probably contain path save request.
@@ -140,6 +153,11 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 			break;
 		case 31: // Send a test tile over the socket.
 			
+			break;
+		case 33: // "ready" code- unlocks waiting operations, usually transfers.
+			synchronized(ready){
+				ready.notifyAll();
+			}
 			break;
 		}
 		Server.log(user+" received string "+string);

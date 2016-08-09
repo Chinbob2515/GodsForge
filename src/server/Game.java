@@ -25,7 +25,7 @@ public class Game {
 	// public [playerObject][] list (or is that just a spin or gods object?)
 	public Tile[][] world;
 
-	public boolean retry = false, showbd = false;
+	public boolean retry = false, showbd = false, started = false;
 	public ArrayList<Integer> players = new ArrayList<Integer>();
 
 	public int deathCount = -1;
@@ -38,9 +38,12 @@ public class Game {
         world = new Tile[3][];
         for(int y = 0; y != 3; y++){
         	for(int x = 0; x != 3; x++){
+        		if(y == 0)
+        			world[x] = new Tile[3];
         		world[x][y] = new Tile(x, y);
         	}
         }
+		started = true;
 	}
 
 	public void run() {

@@ -1,8 +1,12 @@
 package game;
 
+import java.io.Serializable;
+
 // There can never be too much abstraction
 
-public class Tile {
+public class Tile implements Serializable{ 
+	
+	private static final long serialVersionUID = -1773397001509279748L;// In order to save and load via Object[In/Out]putStream
 	
 	private int x, y;
 	

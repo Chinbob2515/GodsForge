@@ -1,12 +1,11 @@
 package server;
 
-import game.Tile;
-
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 import transfer.ObjectClient;
+import transfer.ObjectServer;
 
 public class Gods extends Thread implements GameI{ //  Basically holding and relaying a single player's information.
 
@@ -19,6 +18,8 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 	private Spin spin;
 	private PrintWriter out;
 	public BufferedReader in;
+	private ObjectServer receiveObject;
+	private ObjectClient sendObject;
 	public boolean runB = true, hi = false, observe = true;
 	public Integer lock = new Integer(1), ready = new Integer(1); // Used for thread locking
 	public ArrayList<String> send = new ArrayList<String>();
@@ -34,6 +35,11 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 	public Gods(PrintWriter out, int id, BufferedReader in){
 		this.out = out;
 		this.in = in;
+		sendObject = new ObjectClient();
+		sendObject.start();
+		receiveObject = new ObjectServer();
+		receiveObject.start();
+		out.println("objectserver started");
 	}
 
 	public void run(){
@@ -138,13 +144,7 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 				transfer.FileServer.threadIt("res/Server/userImages/"+texLoc);
 				out.println("go go go"); // Tell client we're ready (i.e. unblock its thread)
 			} else Server.log("not doing file thing");
-			for(Tile[] tiles: spin.game.world){
-				for(Tile tile: tiles){
-					(new ObjectClient(ready, tile)).start();
-					break;
-				}
-				break;
-			}
+			sendObject.addObject(spin.game.world);
 			out.println("33:;"); // Says to set up servers now- so "ready" isn't sent too soon.
 			break;
 			

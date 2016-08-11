@@ -12,6 +12,7 @@ public class ReceiveThread extends Thread{
 	
 	public ReceiveThread(Game game){
 		owner = game;
+		System.out.println("shit the bed, ReceiveThread.java is in use!");
 	}
 	
 	@SuppressWarnings("unused")
@@ -23,8 +24,9 @@ public class ReceiveThread extends Thread{
 			// Many codes are already dealt with elsewhere.
 			switch(code){
 			case 32:
-				Tile tile = (Tile) ObjectServer.main();
-				owner.world[tile.getX()][tile.getY()] = tile;
+				//Tile tile = (Tile) ObjectServer.main();
+				System.out.println("shit the bed, ReceiveThread.java is in use!");
+				//owner.world[tile.getX()][tile.getY()] = tile;
 				break;
 			default:
 				System.out.println("Unknown code for received string: "+string);

@@ -5,69 +5,76 @@ import helpers.Connection;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ObjectClient extends Thread{
 	
+	public static ObjectClient instance; // For the REAL client
+	
 	public static final int port = 4445;
+	public static boolean PORTINUSE = false;
 	
-	private static int idCounter = 0;
-	private static boolean PORT_IN_USE = false;
-	private static Integer PORTLOCK = new Integer(1);
+	public boolean run = true, end = false;
 	
-	public Object lock, object;
+	public ArrayList<Object> objects = new ArrayList<Object>();
 	
-	public ObjectClient(Object lock, Object object){
-		this.lock = lock;
-		this.object = object;
+	public Integer lock = new Integer(1);
+	
+	public static void initClientInstance(){
+		instance = new ObjectClient();
+		instance.start();
 	}
 	
-	public void run(){ // For if you want to silently wait until an objectserver is ready.
-		try {
-			synchronized(lock){
-				lock.wait();
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		ObjectClient.main(object);
+	public void run(){ 
+		main();
 	}
 	
-	public static void main(Object object) {
+	public void main() {
 		try {
-			main(Connection.hostName, object);
+			main(Connection.hostName);
 		} catch (IOException e) {
 			System.out.println("Shit"); // Unique error swear.
 			e.printStackTrace();
 		}
 	}
 	
-    public static void main(String ip, Object object) throws IOException {
+	public void addObject(Object addObject){
+		objects.add(addObject);
+		synchronized(lock){
+			lock.notify();
+		}
+	}
+	
+    public void main(String ip) throws IOException {
         Socket socket = null;
         
-        if(PORT_IN_USE)
-        	synchronized(PORTLOCK){
-        		try {
-					PORTLOCK.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-        	}
-        PORT_IN_USE = true;
-
-        System.out.println("client: "+idCounter++);
-        
-        socket = new Socket(ip, port);
+        socket = new Socket(ip, port + (PORTINUSE?1:0) /* for if we're in offline mode, as there needs to be two connections */);
+        PORTINUSE = true;
         
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         
-        out.writeObject(object);
+        while(run){
+    		if(objects.size() == 0)
+            	synchronized(lock){
+            		try {
+    					lock.wait();
+    				} catch (InterruptedException e) {
+    					e.printStackTrace();
+    				}
+            	}
+    		if(end){break;}
+        	out.writeObject(objects.remove(0));
+        }
 
         out.close();
         socket.close();
-        
-        PORT_IN_USE = false;
-        synchronized(PORTLOCK){
-        	PORTLOCK.notify();
-        }
+    }
+    
+    public void end(){
+    	run = false;
+    	end = true;
+    	synchronized(lock){
+    		lock.notify();
+    	}
     }
 }

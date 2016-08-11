@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import server.Server;
+import transfer.ObjectClient;
 
 public class Connection {
 	
@@ -33,6 +34,9 @@ public class Connection {
 		} 
 		id = Integer.parseInt(receive());
 		out.println("game 1");
+		@SuppressWarnings("unused") // No use for confirm yet. What else than expected could it be?
+		String confirm = receive();
+		ObjectClient.initClientInstance();
 		return 1;
 	}
 	

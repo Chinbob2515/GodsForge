@@ -23,6 +23,7 @@ public abstract class Interface {
 	public Screen launchScreen, parent;
 	public int id, zindex = 0;
 	
+	@Deprecated
 	public Interface(Texture tex, int x, int y, int width, int height){
 		background = tex;			// ...
 		type = 0; 					// THIS TYPE IS BASICALLY DEPRECATED AT THIS POINT- NOTHING WORKS WITH IT
@@ -31,6 +32,7 @@ public abstract class Interface {
 		this.width = width;			// ...
 		this.height = height;		// ...
 		this.id = assignID();		// ...
+		throw new RuntimeException("Never use this type of Interface");
 	}
 	
 	public Interface(Texture tex, double x, double y, double width, double height){
@@ -38,17 +40,21 @@ public abstract class Interface {
 		this.type = 1;
 		this.dx = x - width/2;
 		this.dy = y - height/2;
-		if(this.dx+width > 1)
-			this.dx = 1 - width;
-		else if(this.dx < 0)
-			this.dx = 0;
-		if(this.dy+height > 1)
-			this.dy = 1-height;
-		else if(this.dy < 0)
-			this.dy = 0;
 		this.dwidth = width;
 		this.dheight = height;
+		fitToScreen();
 		this.id = assignID();
+	}
+	
+	public void fitToScreen(){
+		if(dx+dwidth > 1)
+			dx = 1 - dwidth;
+		else if(dx < 0)
+			dx = 0;
+		if(dy+dheight > 1)
+			dy = 1-dheight;
+		else if(dy < 0)
+			dy = 0;
 	}
 	
 	public static int assignID(){
@@ -61,7 +67,8 @@ public abstract class Interface {
 			if(LOG)
 				System.out.println("drawing back");
 			Draw.renderthistex(getRectangle(), background);
-		}
+		} else if (LOG)
+			System.out.println("not drawing back");
 	}
 	
 	public boolean inside(int a, int b){
@@ -124,5 +131,12 @@ public abstract class Interface {
 	public int getrHeight(){if(type == 0){return height;}else{return (int) (dheight);}}
 	public int getWidth(){if(type == 0){return width;}else{return (int) (dwidth*Graphics.WIDTH);}}
 	public int getHeight(){if(type == 0){return height;}else{return (int) (dheight*Graphics.HEIGHT);}}
+	
+	protected void Log(Object... objects){
+		if(!LOG){return;}
+		String string = "";
+		for(Object obj: objects){string += obj.toString();}
+		System.out.println(string);
+	}
 	
 }

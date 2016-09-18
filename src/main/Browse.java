@@ -89,7 +89,7 @@ public class Browse extends Screen{
 		for(int i = 0; i != inters.length; i++){
 			String[] bits = sections[i].split("-");
 			if(bits.length < 2) break; // End of list
-			inters[i] = new Container(null, 0.0, 0, 0, 0, new Interface[]{
+			inters[i] = new Container(null, 0, 0, new Interface[]{
 					new TextField("Name: "+bits[3], 0.0, 0, false),
 					new TextField("Players: "+bits[0], 0.0, 0.12, false),
 					new TextField("Rounds: "+bits[1], 1.0, 0.12, false),

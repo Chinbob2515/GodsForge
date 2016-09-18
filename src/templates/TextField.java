@@ -10,6 +10,7 @@ public class TextField extends Interface{
 	public String text;
 	private int drawnBy = 0;
 	
+	@Deprecated
 	public TextField(Texture tex, String words, int x, int y, int width, int height){
 		super(tex, x, y, width, height);
 		text = words;

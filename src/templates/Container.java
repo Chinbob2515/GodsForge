@@ -13,6 +13,16 @@ public class Container extends Interface{
 	
 	public Container(Texture tex, double x, double y, double width, double height, Interface[] contains) {
 		super(tex, x, y, width, height);// dy should be set relative to the container
+		for(Interface inter: contains){ //Only works with relative co-ords? FIX FIX FIX / DON'T BECAUSE ABSOLUTE IS DEPRECATED
+			inter.setY(inter.dy + y); 
+			inter.setX(inter.dx + x); 
+			inters.add(inter);
+		}
+		detailedResponse = true;
+	}
+	
+	public Container(Texture tex, double x, double y, Interface[] contains) {
+		super(tex, x, y, 0, 0);// dy should be set relative to the container
 		double minx = 1, miny = 1, maxx = 0, maxy = 0;
 		for(Interface inter: contains){ //Only works with relative co-ords? FIX FIX FIX
 			inter.setY(inter.dy + y); 
@@ -84,6 +94,14 @@ public class Container extends Interface{
 			inter.setY(inter.dy - dy + y);
 		}
 		dy = y;
+	}
+	
+	public ArrayList<Interface> getInters(){
+		return inters;
+	}
+	
+	public Interface getInter(int n){
+		return inters.get(n);
 	}
 
 }

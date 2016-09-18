@@ -30,15 +30,6 @@ public class ObjectServer extends Thread{
 		main();
 	}
 	
-	public ObjectServer(){
-        
-        try {
-			throw new IOException();
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		}
-	}
-	
 	public Object popObject(){
 		if(objects.size() != 0){
 			return objects.remove(0);

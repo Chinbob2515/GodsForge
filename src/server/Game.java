@@ -43,6 +43,7 @@ public class Game {
         		world[x][y] = new Tile(x, y);
         	}
         }
+        world[0][0].landValue = 1;
 		started = true;
 	}
 

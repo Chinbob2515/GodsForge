@@ -145,7 +145,6 @@ public class Gods extends Thread implements GameI{ //  Basically holding and rel
 				out.println("go go go"); // Tell client we're ready (i.e. unblock its thread)
 			} else Server.log("not doing file thing");
 			sendObject.addObject(spin.game.world);
-			out.println("33:;"); // Says to set up servers now- so "ready" isn't sent too soon.
 			break;
 			
 		case 30: // I guess this is meant to be a custom code to prompt a file server- should probably contain path save request.
